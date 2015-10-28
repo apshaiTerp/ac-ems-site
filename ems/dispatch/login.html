@@ -132,11 +132,18 @@
             var messageType = data['messageType'];
             var errorType   = data['errorType'];
 
+            console.log("messageType: " + messageType);
+            console.log("errorType: " + errorType);
+
             if (messageType == "Login Successful") {
 
               var userID          = data['userID'];
               var userRole        = data['userRole'];
               var userDisplayName = data['userName'];
+
+              console.log("userID: " + userID);
+              console.log("userRole: " + userRole);
+              console.log("displayName: " + userDisplayName);
 
               //Remove all the specific items
               localStorage.clear();
@@ -147,7 +154,8 @@
               sessionStorage.setItem("userRole", userRole);
               sessionStorage.setItem("userDisplayName", userDisplayName);
 
-              window.location = "./dispatch.html";
+              //window.location = "./dispatch.html";
+              alert("Good!  Will move on soon.");
             } else {
               var errorMessage = data['errorMessage'];
               document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>' + errorMessage + '</span>   Please try again.</strong>';
