@@ -136,23 +136,23 @@
             //console.log("errorType: " + errorType);
 
             if (messageType == "Login Successful") {
+              console.log("Inside the Login Successful Branch");
+              
+              var curUserID          = data['userID'];
+              var curUserRole        = data['userRole'];
+              var curUserDisplayName = data['userName'];
 
-              var userID          = data['userID'];
-              var userRole        = data['userRole'];
-              var userDisplayName = data['userName'];
-
-              console.log("userID: " + userID);
-              console.log("userRole: " + userRole);
-              console.log("displayName: " + userDisplayName);
+              console.log("userID: " + curUserID);
+              console.log("userRole: " + curUserRole);
+              console.log("displayName: " + curUserDisplayName);
 
               //Remove all the specific items
               localStorage.clear();
               sessionStorage.clear();
               
-              sessionStorage.setItem("userID", userID);
-              sessionStorage.setItem("userName", userName);
-              sessionStorage.setItem("userRole", userRole);
-              sessionStorage.setItem("userDisplayName", userDisplayName);
+              sessionStorage.setItem("userID", curUserID);
+              sessionStorage.setItem("userRole", curUserRole);
+              sessionStorage.setItem("userDisplayName", curUserDisplayName);
 
               //window.location = "./dispatch.html";
               alert("Good!  Will move on soon.");
