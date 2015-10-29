@@ -229,7 +229,7 @@
         var providerID = provider.substring(0, 4);
 
         //Now we need to run our validation check
-        var jsonBody = '{ "userName" : "' + userName + '", "password" : "' + pwd + '", "userRole" : "DISPATCH", "authorizeID" : ' + providerID + '}';
+        var jsonBody = '{ "userName" : "' + userName + '", "password" : "' + pwd + '", "userRole" : "EMS", "authorizeID" : ' + providerID + '}';
         $.ajax ({
           type: 'POST',
           url:  'http://107.188.249.238:8080/ac-ems-system-rest-0.9/login',
