@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/hospital1.png">
+
+    <title>TerrapinEMS Hospital Administration</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href='http://fonts.googleapis.com/css?family=Fredericka+the+Great|Architects+Daughter|Ubuntu' rel='stylesheet' type='text/css'>
+    <link href="css/apshai.css" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand active">TerrapinEMS ER Admin</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="Active"><a>Home</a></li>
+            <li><a href="./about.html">About</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="bg-login"></div>
+    <div class="jumbotron">
+      <div class="container">
+      </div>
+    </div>
+
+    <!-- Login Window Block -->
+    <div class="container">
+      <h3 align="center">The Hospital Name Goes Here</h3>
+      <h5 align="center">Logged in as USERNAME</h4>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading panel-title" id="er-heading">Emergency Room Capacity
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-9">
+                <strong>Total ER Beds</strong><span class="label label-default label-right" id="erbed-count">20</span>
+              </div>
+              <div class="col-xs-3"></div>
+            </div>
+            <div><hr></div>
+            <div class="row">
+              <div class="col-xs-9">
+                <strong>Beds Free</strong><span class="label label-default label-right" id="erbedfree-count">20</span>
+              </div>
+              <div class="col-xs-3 btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-primary btn-block" id="er-admit-button">Admit 1</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-9">
+                <strong>Beds Occupied</strong><span class="label label-default label-right" id="erbedoccupied-count">0</span>
+              </div>
+              <div class="col-xs-3 btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-primary btn-block" id="er-admit-button">Discharge 1</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-9">
+                <strong>Beds In Cleanup</strong><span class="label label-default label-right" id="erbedcleanup-count">0</span>
+              </div>
+              <div class="col-xs-3 btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-primary btn-block" id="er-admit-button">Open 1</button>
+              </div>
+            </div>
+            <div><hr></div>
+            <div class="row">
+              <div class="col-xs-9"><strong>ER Divert Status</strong></div>
+              <div class="checkbox-inline col-xs-3">
+                <input type="checkbox" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-9"><strong>STEMI Divert Status</strong></div>
+              <div class="checkbox-inline col-xs-3">
+                <input type="checkbox" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-9"><strong>Stroke Divert Status</strong></div>
+              <div class="checkbox-inline col-xs-3">
+                <input type="checkbox" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading panel-title" id="trauma-heading">Trauma Capacity
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-9">
+                <strong>Total Trauma Beds</strong><span class="label label-default label-right" id="traumabed-count">20</span>
+              </div>
+              <div class="col-xs-3"></div>
+            </div>
+            <div><hr></div>
+            <div class="row">
+              <div class="col-xs-9">
+                <strong>Trauma Beds Free</strong><span class="label label-default label-right" id="traumabedfree-count">20</span>
+              </div>
+              <div class="col-xs-3 btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-primary btn-block" id="trauma-admit-button">Admit 1</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-9">
+                <strong>Trauma Beds Occupied</strong><span class="label label-default label-right" id="traumabedoccupied-count">0</span>
+              </div>
+              <div class="col-xs-3 btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-primary btn-block" id="trauma-admit-button">Discharge 1</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-9">
+                <strong>Trauma Beds In Cleanup</strong><span class="label label-default label-right" id="traumabedcleanup-count">0</span>
+              </div>
+              <div class="col-xs-3 btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-primary btn-block" id="trauma-admit-button">Open 1</button>
+              </div>
+            </div>
+            <div><hr></div>
+            <div class="row">
+              <div class="col-xs-9"><strong>Trauma Divert Status</strong></div>
+              <div class="checkbox-inline col-xs-3">
+                <input type="checkbox" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-9"><strong>Burn Unit Divert Status</strong></div>
+              <div class="checkbox-inline col-xs-3">
+                <input type="checkbox" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Site footer -->
+    <div class="container">
+      <hr>
+      <footer>
+        <p>&copy; TerrapinEMS Dispatch 2015 - A Project developed in conjunction with UMKC</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
+
+    <script type='text/javascript'>//<![CDATA[ 
+
+      document.getElementById("login-button").onclick = function() {
+        var userName = document.getElementById("login-name").value;
+        var pwd      = document.getElementById("login-pass").value;
+        var hospital = document.getElementById("hospital-select").value;
+
+        var strOut = "[" + userName + ":" + pwd + "]";
+
+        if (userName == "") {
+          document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>You must provide a User Name to Login!</span>   Please try again.</strong>';
+          document.getElementById("login-name").focus();
+          return;
+        }
+        if (pwd == "") {
+          document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>You must provide a Password to Login!</span>   Please try again.</strong>';
+          document.getElementById("login-pass").focus();
+          return;
+        }
+        if (hospital == "Select Your Hospital") {
+          document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>You must select a Hospital to Login!</span>   Please try again.</strong>';
+          document.getElementById("hospital-select").focus();
+          return;
+        }
+
+        var hospitalID = hospital.substring(0, 4);
+
+        //Now we need to run our validation check
+        var jsonBody = '{ "userName" : "' + userName + '", "password" : "' + pwd + '", "userRole" : "HOSPITAL", "authorizeID" : ' + hospitalID + '}';
+        $.ajax ({
+          type: 'POST',
+          url:  'http://107.188.249.238:8080/ac-ems-system-rest-0.9/login',
+          data: jsonBody,
+          contentType: "application/json",
+          dataType: 'json',
+          success: function(data) {
+            var messageType = data['messageType'];
+            var errorType   = data['errorType'];
+
+            console.log("messageType: " + messageType);
+            console.log("errorType: " + errorType);
+
+            if (messageType == "Login Successful") {
+              var curUserID          = data['userID'];
+              var curUserRole        = data['userRole'];
+              var curUserDisplayName = data['userName'];
+
+              console.log("userID: " + curUserID);
+              console.log("userRole: " + curUserRole);
+              console.log("displayName: " + curUserDisplayName);
+
+              //Remove all the specific items
+              localStorage.clear();
+              sessionStorage.clear();
+              
+              sessionStorage.setItem("userID", curUserID);
+              sessionStorage.setItem("userRole", curUserRole);
+              sessionStorage.setItem("userDisplayName", curUserDisplayName);
+              sessionStorage.setItem("hospitalID", hospitalID);
+
+              //window.location = "./dispatch.html";
+              alert("Good!  Will move on soon.");
+            } else {
+              var errorMessage = data['errorMessage'];
+              document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>' + errorMessage + '</span>   Please try again.</strong>';
+              document.getElementById("login-name").focus();
+            }
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert('An Unknown Error Occured During Login.  Please Try Again Later.');
+          }
+        });
+      };
+
+    </script>
+  </body>
+</html>
