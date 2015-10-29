@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/ems.png">
+
+    <title>TerrapinEMS EMS Provider Login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href='http://fonts.googleapis.com/css?family=Fredericka+the+Great|Architects+Daughter|Ubuntu' rel='stylesheet' type='text/css'>
+    <link href="css/apshai.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand active">TerrapinEMS EMS Admin</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="./dispatch.html">Home</a></li>
+            <li><a href="./about.html">About</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="bg-login"></div>
+    <div class="jumbotron">
+      <div class="container">
+      </div>
+    </div>
+
+    <!-- Login Window Block -->
+    <div><p></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <p id="sign-in-text" align="center"><strong> Please Login for TerrapinEMS ER Administration</strong></p>
+            </div>
+            <div class="panel-body">
+              <form role="form">
+                <fieldset>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-10 col-md-offset-1 ">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-user"></i>
+                          </span> 
+                          <input class="form-control" id="login-name" placeholder="Username" name="loginname" type="text" autofocus>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group">
+                          <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-lock"></i>
+                          </span>
+                          <input class="form-control" id="login-pass" placeholder="Password" name="password" type="password" value="">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <select class="form-control" id="provider-select">
+                          <option>Select Your Provider</option>
+                          <option>1230001 - American Medical Response</option>
+                          <option>1230002 - American Medical Response</option>
+                          <option>1230003 - Belton Emergency Services</option>
+                          <option>1230004 - Bonner Springs Fire Department</option>
+                          <option>1230005 - Central Cass County Fire Protection District</option>
+                          <option>1230006 - Central Jackson County Fire Protection District</option>
+                          <option>1230007 - Childrens Mercy Critical Care Transport</option>
+                          <option>1230008 - Claycomo Fire Department</option>
+                          <option>1230009 - Excelsior Springs Fire Department</option>
+                          <option>1230010 - Fort Osage Fire District </option>
+                          <option>1230011 - Franklin County Ambulance </option>
+                          <option>1230012 - Garden City Fire Department</option>
+                          <option>1230013 - Gladstone Public Safety Department</option>
+                          <option>1230014 - Grandview Fire Department</option>
+                          <option>1230015 - Harrisonville Fire Department</option>
+                          <option>1230016 - Higginsville EMS</option>
+                          <option>1230017 - Holt Fire Protection District</option>
+                          <option>1230018 - City of Independence Fire Department</option>
+                          <option>1230019 - City of Independence Fire Department</option>
+                          <option>1230020 - Sugar Creek Fire Department</option>
+                          <option>1230021 - John Knox Village EMS</option>
+                          <option>1230022 - Johnson County, Kan., Fire District #2 (Rural)</option>
+                          <option>1230023 - Johnson County Med-Act</option>
+                          <option>1230024 - KCK Fire Department Station No. 3</option>
+                          <option>1230025 - KCK Fire Department Station No. 9</option>
+                          <option>1230026 - KCK Fire Department Station No. 10</option>
+                          <option>1230027 - KCK Fire Department Station No. 17</option>
+                          <option>1230028 - Kearney Fire and Rescue</option>
+                          <option>1230029 - Lake City Fire Department</option>
+                          <option>1230030 - Lawrence-Douglas County Fire and Medical</option>
+                          <option>1230031 - Lawson Fire and Rescue</option>
+                          <option>1230032 - Leavenworth EMS</option>
+                          <option>1230033 - Lee's Summit Fire Department</option>
+                          <option>1230034 - Lee's Summit Fire Station 2</option>
+                          <option>1230035 - Lee's Summit Fire Station 3</option>
+                          <option>1230036 - Lee's Summit Fire Station 4</option>
+                          <option>1230037 - Lee's Summit Fire Station 5</option>
+                          <option>1230038 - Lee's Summit Fire Station 6</option>
+                          <option>1230039 - Lee's Summit Fire Station 7</option>
+                          <option>1230040 - Lexington Fire Department</option>
+                          <option>1230041 - Lone Jack Fire Protection District</option>
+                          <option>1230042 - Lotawana Fire Protection District</option>
+                          <option>1230043 - Miami County EMS Station 141</option>
+                          <option>1230044 - Miami County EMS Station 142</option>
+                          <option>1230045 - North Kansas City Fire Department</option>
+                          <option>1230046 - North Kansas City Fire Department</option>
+                          <option>1230047 - Northland Regional Ambulance District</option>
+                          <option>1230048 - Pleasant Hill Ambulance District</option>
+                          <option>1230049 - Pleasant Valley Fire Department</option>
+                          <option>1230050 - Prairie Township Fire Protection District</option>
+                          <option>1230051 - Smithville Fire Protection District</option>
+                          <option>1230052 - Sni Valley Fire Protection District</option>
+                          <option>1230053 - South Metro Fire District.</option>
+                          <option>1230054 - Wellington-Napoleon Fire Protection District</option>
+                          <option>1230055 - West Peculiar Fire Protection District</option>
+                          <option>1230056 - West Platte Fire Protection District</option>
+                          <option>1230057 - KCFD Station 4 (Line Creek)</option>
+                          <option>1230058 - KCFD Station 6 (Avondale)</option>
+                          <option>1230059 - KCFD Station 7 (Westside)</option>
+                          <option>1230060 - KCFD Station 14 (Shoal Creek)</option>
+                          <option>1230061 - KCFD Station 16 (Overhaul Base)</option>
+                          <option>1230062 - KCFD Station 18 (Ingleside)</option>
+                          <option>1230063 - KCFD Station 19 (Westport)</option>
+                          <option>1230064 - KCFD Station 28 (Red Bridge)</option>
+                          <option>1230065 - KCFD Station 29 (Brookside)</option>
+                          <option>1230066 - KCFD Station 30 (Marlboroough)</option>
+                          <option>1230067 - KCFD Station 33 (East Swope Highlands)</option>
+                          <option>1230068 - KCFD Station 34 (Winnwood)</option>
+                          <option>1230069 - KCFD Station 35 (Swope Parkway-Elmwood)</option>
+                          <option>1230070 - KCFD Station 36 (Indian Creek)</option>
+                          <option>1230071 - KCFD Station 37 (Waldo)</option>
+                          <option>1230072 - KCFD Station 39 (Royal Meadows)</option>
+                          <option>1230073 - KCFD Station 40 (Englewood)</option>
+                          <option>1230074 - KCFD Station 42 (Ruskin Heights)</option>
+                          <option>1230075 - KCK Fire Department Station 15</option>
+                          <option>1230076 - KCK Fire Department Station 7</option>
+                          <option>1230077 - Lenexa Fire Station 1</option>
+                          <option>1230078 - Lenexa Fire Station 2</option>
+                          <option>1230079 - Lenexa Fire Station 5</option>
+                          <option>1230080 - Liberty Fire Department Headquarters - Station 1</option>
+                          <option>1230081 - Liberty Fire Station 2</option>
+                          <option>1230082 - Olathe Fire Station 51</option>
+                          <option>1230083 - Olathe Fire Station 52</option>
+                          <option>1230084 - Olathe Fire Station 53</option>
+                          <option>1230085 - Olathe Fire Station 54</option>
+                          <option>1230086 - Olathe Fire Station 55</option>
+                          <option>1230087 - Olathe Fire Station 56</option>
+                          <option>1230088 - Olathe Fire Station 57</option>
+                          <option>1230089 - Overland Park Fire Department Station 41</option>
+                          <option>1230090 - Overland Park Fire Department Station 42</option>
+                          <option>1230091 - Overland Park Fire Department Station 43</option>
+                          <option>1230092 - Overland Park Fire Department Station 44</option>
+                          <option>1230093 - Overland Park Fire Department Station 45</option>
+                          <option>1230094 - Raytown Fire Protection District Station 51"</option>
+                        </select> 
+                      </div>
+                      <div class="form-group">
+                        <input type="button" id="login-button" class="btn btn-md btn-primary btn-block" value="Sign in">
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Site footer -->
+    <div class="container">
+      <hr>
+      <footer>
+        <p>&copy; TerrapinEMS Dispatch 2015 - A Project developed in conjunction with UMKC</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script type='text/javascript'>//<![CDATA[ 
+
+      document.getElementById("login-button").onclick = function() {
+        var userName = document.getElementById("login-name").value;
+        var pwd      = document.getElementById("login-pass").value;
+        var provider = document.getElementById("provider-select").value;
+
+        var strOut = "[" + userName + ":" + pwd + "]";
+
+        if (userName == "") {
+          document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>You must provide a User Name to Login!</span>   Please try again.</strong>';
+          document.getElementById("login-name").focus();
+          return;
+        }
+        if (pwd == "") {
+          document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>You must provide a Password to Login!</span>   Please try again.</strong>';
+          document.getElementById("login-pass").focus();
+          return;
+        }
+        if (provider == "Select Your Provider") {
+          document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>You must select a Hospital to Login!</span>   Please try again.</strong>';
+          document.getElementById("provider-select").focus();
+          return;
+        }
+
+        var providerID = provider.substring(0, 4);
+
+        //Now we need to run our validation check
+        var jsonBody = '{ "userName" : "' + userName + '", "password" : "' + pwd + '", "userRole" : "DISPATCH", "authorizeID" : ' + providerID + '}';
+        $.ajax ({
+          type: 'POST',
+          url:  'http://107.188.249.238:8080/ac-ems-system-rest-0.9/login',
+          data: jsonBody,
+          contentType: "application/json",
+          dataType: 'json',
+          success: function(data) {
+            var messageType = data['messageType'];
+            var errorType   = data['errorType'];
+
+            console.log("messageType: " + messageType);
+            console.log("errorType: " + errorType);
+
+            if (messageType == "Login Successful") {
+              var curUserID          = data['userID'];
+              var curUserRole        = data['userRole'];
+              var curUserDisplayName = data['userName'];
+
+              console.log("userID: " + curUserID);
+              console.log("userRole: " + curUserRole);
+              console.log("displayName: " + curUserDisplayName);
+
+              //Remove all the specific items
+              localStorage.clear();
+              sessionStorage.clear();
+              
+              sessionStorage.setItem("userID", curUserID);
+              sessionStorage.setItem("userRole", curUserRole);
+              sessionStorage.setItem("userDisplayName", curUserDisplayName);
+              sessionStorage.setItem("providerID", providerID);
+
+              //window.location = "./dispatch.html";
+              alert("Good!  Will move on soon.");
+            } else {
+              var errorMessage = data['errorMessage'];
+              document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>' + errorMessage + '</span>   Please try again.</strong>';
+              document.getElementById("login-name").focus();
+            }
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert('An Unknown Error Occured During Login.  Please Try Again Later.');
+          }
+        });
+      };
+
+    </script>
+  </body>
+</html>
