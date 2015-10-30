@@ -2,6 +2,24 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script type='text/javascript'>//<![CDATA[ 
+      /********
+      var userID     = sessionStorage.getItem("userID");
+      var hospitalID = sessionStorage.getItem("hospitalID");
+
+      if (userID == null) {
+        window.location = "./login.html";
+      }
+      if (hospitalID == null) {
+        window.location = "./login.html";
+      }
+      ********/
+      sessionStorage.setItem("userID", 445031);
+      sessionStorage.setItem("userRole", "HOSPITAL");
+      sessionStorage.setItem("userDisplayName", "curUserDisplayName");
+      sessionStorage.setItem("hospitalID", 3001);
+    </script>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -48,8 +66,8 @@
 
     <!-- Login Window Block -->
     <div class="container">
-      <h3 align="center">The Hospital Name Goes Here</h3>
-      <h5 align="center">Logged in as USERNAME</h4>
+      <h3 align="center" id="name-header">The Hospital Name Goes Here</h3>
+      <h5 align="center" id="user-header">Logged in as USERNAME</h5>
     </div>
     <div class="container">
       <div class="row">
@@ -79,7 +97,7 @@
                 <strong>Beds Occupied</strong><span class="label label-default label-right" id="erbedoccupied-count">0</span>
               </div>
               <div class="col-xs-3 btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-primary btn-block" id="er-admit-button">Discharge 1</button>
+                <button type="button" class="btn btn-primary btn-block" id="er-occupied-button">Discharge 1</button>
               </div>
             </div>
             <div class="row">
@@ -87,26 +105,26 @@
                 <strong>Beds In Cleanup</strong><span class="label label-default label-right" id="erbedcleanup-count">0</span>
               </div>
               <div class="col-xs-3 btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-primary btn-block" id="er-admit-button">Open 1</button>
+                <button type="button" class="btn btn-primary btn-block" id="er-cleanup-button">Open 1</button>
               </div>
             </div>
             <div><hr></div>
             <div class="row">
               <div class="col-xs-9"><strong>ER Divert Status</strong></div>
               <div class="checkbox-inline col-xs-3">
-                <input type="checkbox" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
+                <input type="checkbox" id="er-toggle" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
               </div>
             </div>
             <div class="row">
               <div class="col-xs-9"><strong>STEMI Divert Status</strong></div>
               <div class="checkbox-inline col-xs-3">
-                <input type="checkbox" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
+                <input type="checkbox" id="stemi-toggle" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
               </div>
             </div>
             <div class="row">
               <div class="col-xs-9"><strong>Stroke Divert Status</strong></div>
               <div class="checkbox-inline col-xs-3">
-                <input type="checkbox" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
+                <input type="checkbox" id="stroke-toggle" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
               </div>
             </div>
           </div>
@@ -137,7 +155,7 @@
                 <strong>Trauma Beds Occupied</strong><span class="label label-default label-right" id="traumabedoccupied-count">0</span>
               </div>
               <div class="col-xs-3 btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-primary btn-block" id="trauma-admit-button">Discharge 1</button>
+                <button type="button" class="btn btn-primary btn-block" id="trauma-occupied-button">Discharge 1</button>
               </div>
             </div>
             <div class="row">
@@ -145,20 +163,20 @@
                 <strong>Trauma Beds In Cleanup</strong><span class="label label-default label-right" id="traumabedcleanup-count">0</span>
               </div>
               <div class="col-xs-3 btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-primary btn-block" id="trauma-admit-button">Open 1</button>
+                <button type="button" class="btn btn-primary btn-block" id="trauma-cleanup-button">Open 1</button>
               </div>
             </div>
             <div><hr></div>
             <div class="row">
               <div class="col-xs-9"><strong>Trauma Divert Status</strong></div>
               <div class="checkbox-inline col-xs-3">
-                <input type="checkbox" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
+                <input type="checkbox" id="trauma-toggle" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
               </div>
             </div>
             <div class="row">
               <div class="col-xs-9"><strong>Burn Unit Divert Status</strong></div>
               <div class="checkbox-inline col-xs-3">
-                <input type="checkbox" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
+                <input type="checkbox" id="burn-toggle" checked data-toggle="toggle" data-on="Open" data-onstyle="success" data-off="In Diversion" data-offstyle="danger">
               </div>
             </div>
           </div>
@@ -183,77 +201,82 @@
 
     <script type='text/javascript'>//<![CDATA[ 
 
-      document.getElementById("login-button").onclick = function() {
-        var userName = document.getElementById("login-name").value;
-        var pwd      = document.getElementById("login-pass").value;
-        var hospital = document.getElementById("hospital-select").value;
-
-        var strOut = "[" + userName + ":" + pwd + "]";
-
-        if (userName == "") {
-          document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>You must provide a User Name to Login!</span>   Please try again.</strong>';
-          document.getElementById("login-name").focus();
-          return;
-        }
-        if (pwd == "") {
-          document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>You must provide a Password to Login!</span>   Please try again.</strong>';
-          document.getElementById("login-pass").focus();
-          return;
-        }
-        if (hospital == "Select Your Hospital") {
-          document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>You must select a Hospital to Login!</span>   Please try again.</strong>';
-          document.getElementById("hospital-select").focus();
-          return;
-        }
-
-        var hospitalID = hospital.substring(0, 4);
-
-        //Now we need to run our validation check
-        var jsonBody = '{ "userName" : "' + userName + '", "password" : "' + pwd + '", "userRole" : "HOSPITAL", "authorizeID" : ' + hospitalID + '}';
-        $.ajax ({
-          type: 'POST',
-          url:  'http://107.188.249.238:8080/ac-ems-system-rest-0.9/login',
-          data: jsonBody,
-          contentType: "application/json",
-          dataType: 'json',
-          success: function(data) {
-            var messageType = data['messageType'];
-            var errorType   = data['errorType'];
-
-            console.log("messageType: " + messageType);
-            console.log("errorType: " + errorType);
-
-            if (messageType == "Login Successful") {
-              var curUserID          = data['userID'];
-              var curUserRole        = data['userRole'];
-              var curUserDisplayName = data['userName'];
-
-              console.log("userID: " + curUserID);
-              console.log("userRole: " + curUserRole);
-              console.log("displayName: " + curUserDisplayName);
-
-              //Remove all the specific items
-              localStorage.clear();
-              sessionStorage.clear();
-              
-              sessionStorage.setItem("userID", curUserID);
-              sessionStorage.setItem("userRole", curUserRole);
-              sessionStorage.setItem("userDisplayName", curUserDisplayName);
-              sessionStorage.setItem("hospitalID", hospitalID);
-
-              //window.location = "./dispatch.html";
-              alert("Good!  Will move on soon.");
-            } else {
-              var errorMessage = data['errorMessage'];
-              document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>' + errorMessage + '</span>   Please try again.</strong>';
-              document.getElementById("login-name").focus();
-            }
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            alert('An Unknown Error Occured During Login.  Please Try Again Later.');
-          }
-        });
+      function logOutFunction() {
+        sessionStorage.clear();
+        localStorage.clear();
+        window.location = "./login.html";
       };
+
+      function populateHospitalFields() {
+        var userID          = sessionStorage.getItem("userID");
+        var hospitalID      = sessionStorage.getItem("hospitalID");
+        var userDisplayName = sessionStorage.getItem("userDisplayName");
+
+        document.getElementById("user-header").innerHTML = 'Logged in as ' + userDisplayName;
+
+        var gameURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9/hospital?id=" + hospitalID;
+        $.getJSON( gameURL, { format: 'json'} )
+            .done(function(data) {  
+              var hospitalName       = data['hospitalName'];
+              var traumaBeds         = data['traumaBeds'];
+              var traumaBedsFree     = data['traumaBedsFree'];
+              var traumaBedsOccupied = data['traumaBedsOccupied'];
+              var traumaBedsCleanup  = data['traumaBedsCleanup'];
+              var erBeds             = data['erBeds'];
+              var erBedsFree         = data['erBedsFree'];
+              var erBedsOccupied     = data['erBedsOccupied'];
+              var erBedsCleanup      = data['erBedsCleanup'];
+              var erDivert           = data['erDivert'];
+              var traumaDivert       = data['traumaDivert'];
+              var burnDivert         = data['burnDivert'];
+              var stemiDivert        = data['stemiDivert'];
+              var strokeDivert       = data['strokeDivert'];
+
+              document.getElementById("name-header").innerHTML = hospitalName;
+
+              document.getElementById("erbed-count").innerHTML         = erBeds;
+              document.getElementById("erbedfree-count").innerHTML     = erBedsFree;
+              document.getElementById("erbedoccupied-count").innerHTML = erBedsOccupied;
+              document.getElementById("erbedcleanup-count").innerHTML  = erBedsCleanup;
+
+              document.getElementById("traumabed-count").innerHTML         = traumaBeds;
+              document.getElementById("traumabedfree-count").innerHTML     = traumaBedsFree;
+              document.getElementById("traumabedoccupied-count").innerHTML = traumaBedsOccupied;
+              document.getElementById("traumabedcleanup-count").innerHTML  = traumaBedsCleanup;
+
+              if (traumaBeds == 0) {
+                //Disable all the buttons
+                $('#trauma-admit-button').prop('disabled', true);
+                $('#trauma-occupied-button').prop('disabled', true);
+                $('#trauma-cleanup-button').prop('disabled', true);
+              }
+
+              //Work through all the initial toggle states
+              if (erDivert == "open")   { $('#er-toggle').bootstrapToggle('on'); }
+              if (erDivert == "divert") { $('#er-toggle').bootstrapToggle('off'); }
+              if (erDivert == "na")     { $('#er-toggle').bootstrapToggle('disable'); }
+
+              if (traumaDivert == "open")   { $('#trauma-toggle').bootstrapToggle('on'); }
+              if (traumaDivert == "divert") { $('#trauma-toggle').bootstrapToggle('off'); }
+              if (traumaDivert == "na")     { $('#trauma-toggle').bootstrapToggle('disable'); }
+
+              if (burnDivert == "open")   { $('#burn-toggle').bootstrapToggle('on'); }
+              if (burnDivert == "divert") { $('#burn-toggle').bootstrapToggle('off'); }
+              if (burnDivert == "na")     { $('#burn-toggle').bootstrapToggle('disable'); }
+
+              if (stemiDivert == "open")   { $('#stemi-toggle').bootstrapToggle('on'); }
+              if (stemiDivert == "divert") { $('#stemi-toggle').bootstrapToggle('off'); }
+              if (stemiDivert == "na")     { $('#stemi-toggle').bootstrapToggle('disable'); }
+
+              if (strokeDivert == "open")   { $('#stroke-toggle').bootstrapToggle('on'); }
+              if (strokeDivert == "divert") { $('#stroke-toggle').bootstrapToggle('off'); }
+              if (strokeDivert == "na")     { $('#stroke-toggle').bootstrapToggle('disable'); }
+
+        });
+
+      };
+
+      populateHospitalFields();
 
     </script>
   </body>
