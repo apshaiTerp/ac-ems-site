@@ -201,8 +201,7 @@
               sessionStorage.setItem("userDisplayName", curUserDisplayName);
               sessionStorage.setItem("hospitalID", hospitalID);
 
-              //window.location = "./dispatch.html";
-              alert("Good!  Will move on soon.");
+              window.location = "./hospital.html";
             } else {
               var errorMessage = data['errorMessage'];
               document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>' + errorMessage + '</span>   Please try again.</strong>';
