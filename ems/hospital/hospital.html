@@ -277,11 +277,7 @@
 
               //Add Actions for Toggles
               $('#er-toggle').change(function() {
-                if ($(this).prop('checked')) {
-                  sendDivertMessage("er", "open");
-                } else {
-                  sendDivertMessage("er", "divert");
-                }
+                if ($(this).prop('checked')) { sendDivertMessage("er", "open"); } else { sendDivertMessage("er", "divert"); }
               });
 
         });
@@ -292,6 +288,28 @@
         console.log("The divertType: " + divertType);
         console.log("The divertState: " + divertState);
 
+        var hospitalID = sessionStorage.getItem("hospitalID");
+        var userID     = sessionStorage.getItem("userID");
+
+        var jsonBody = '{ "hospitalID": "' + hospitalID + '", "actionType" : "' + divertType + '", "divertState" : "' + divertState + '", "userID": "' + userID + '" }';
+        $.ajax ({
+          type: 'POST',
+          url: 'http://107.188.249.238:8080/ac-ems-system-rest-0.9/hospital/divert',
+          data: jsonBody,
+          contentType: "application/json",
+          dataType: 'json',
+          success: function(data) {
+            var errorType   = data['errorType'];
+
+            if (errorType != null) {
+              var errorMessage = data['errorMessage'];
+              alert(errorType + ": " + errorMessage);
+            } 
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert('An Unknown Error Occured During Add Task.  Please Try Again Later.');
+          }
+        });
       };
 
       populateHospitalFields();
