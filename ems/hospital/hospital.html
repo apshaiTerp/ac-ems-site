@@ -274,12 +274,12 @@
               if (strokeDivert == "na")     { $('#stroke-toggle').bootstrapToggle('disable'); }
 
               //Add Actions for Buttons
-              $('#er-admit-button').click(function() { sendActionMessage("admiter"); });
-              $('#er-occupied-button').click(function() { sendActionMessage("dischargeer"); });
-              $('#er-cleanup-button').click(function() { sendActionMessage("cleanuper"); });
-              $('#trauma-admit-button').click(function() { sendActionMessage("admittrauma"); });
-              $('#trauma-occupied-button').click(function() { sendActionMessage("dischargetrauma"); });
-              $('#trauma-cleanup-button').click(function() { sendActionMessage("cleanuptrauma"); });
+              $('#er-admit-button').on('click', function() { sendActionMessage("admiter"); });
+              $('#er-occupied-button').on('click', function() { sendActionMessage("dischargeer"); });
+              $('#er-cleanup-button').on('click', function() { sendActionMessage("cleanuper"); });
+              $('#trauma-admit-button').on('click', function() { sendActionMessage("admittrauma"); });
+              $('#trauma-occupied-button').on('click', function() { sendActionMessage("dischargetrauma"); });
+              $('#trauma-cleanup-button').on('click', function() { sendActionMessage("cleanuptrauma"); });
 
               //Add Actions for Toggles
               $('#er-toggle').change(function() {
