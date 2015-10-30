@@ -277,7 +277,11 @@
 
               //Add Actions for Toggles
               $('#er-toggle').change(function() {
-                console.log("Current er-toggle state: " + $(this).prop('checked'));
+                if ($(this).prop('checked')) {
+                  console.log("Opening");
+                } else {
+                  console.log("Diverting");
+                }
               });
 
         });
