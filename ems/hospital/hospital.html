@@ -274,20 +274,74 @@
               if (strokeDivert == "na")     { $('#stroke-toggle').bootstrapToggle('disable'); }
 
               //Add Actions for Buttons
+              $('#er-admit-button').click(function() { sendActionMessage("admiter"); });
+              $('#er-occupied-button').click(function() { sendActionMessage("dischargeer"); });
+              $('#er-cleanup-button').click(function() { sendActionMessage("cleanuper"); });
+              $('#trauma-admit-button').click(function() { sendActionMessage("admittrauma"); });
+              $('#trauma-occupied-button').click(function() { sendActionMessage("dischargetrauma"); });
+              $('#trauma-cleanup-button').click(function() { sendActionMessage("cleanuptrauma"); });
 
               //Add Actions for Toggles
               $('#er-toggle').change(function() {
                 if ($(this).prop('checked')) { sendDivertMessage("er", "open"); } else { sendDivertMessage("er", "divert"); }
+              });
+              $('#trauma-toggle').change(function() {
+                if ($(this).prop('checked')) { sendDivertMessage("trauma", "open"); } else { sendDivertMessage("trauma", "divert"); }
+              });
+              $('#burn-toggle').change(function() {
+                if ($(this).prop('checked')) { sendDivertMessage("burn", "open"); } else { sendDivertMessage("burn", "divert"); }
+              });
+              $('#stemi-toggle').change(function() {
+                if ($(this).prop('checked')) { sendDivertMessage("stemi", "open"); } else { sendDivertMessage("stemi", "divert"); }
+              });
+              $('#stroke-toggle').change(function() {
+                if ($(this).prop('checked')) { sendDivertMessage("stroke", "open"); } else { sendDivertMessage("stroke", "divert"); }
               });
 
         });
 
       };
 
-      function sendDivertMessage(divertType, divertState) {
-        console.log("The divertType: " + divertType);
-        console.log("The divertState: " + divertState);
+      function sendActionMessage(actionType) {
+        var hospitalID = sessionStorage.getItem("hospitalID");
 
+        var jsonBody = '{ "hospitalID": "' + hospitalID + '", "actionType" : "' + actionType + '" }';
+        $.ajax ({
+          type: 'POST',
+          url: 'http://107.188.249.238:8080/ac-ems-system-rest-0.9/hospital/beds',
+          data: jsonBody,
+          contentType: "application/json",
+          dataType: 'json',
+          success: function(data) {
+            var errorType   = data['errorType'];
+
+            if (errorType != null) {
+              var errorMessage = data['errorMessage'];
+              alert(errorType + ": " + errorMessage);
+            } else {
+              var traumaBedsFree     = data['traumaBedsFree'];
+              var traumaBedsOccupied = data['traumaBedsOccupied'];
+              var traumaBedsCleanup  = data['traumaBedsCleanup'];
+              var erBedsFree         = data['erBedsFree'];
+              var erBedsOccupied     = data['erBedsOccupied'];
+              var erBedsCleanup      = data['erBedsCleanup'];
+
+              document.getElementById("erbedfree-count").innerHTML     = erBedsFree;
+              document.getElementById("erbedoccupied-count").innerHTML = erBedsOccupied;
+              document.getElementById("erbedcleanup-count").innerHTML  = erBedsCleanup;
+
+              document.getElementById("traumabedfree-count").innerHTML     = traumaBedsFree;
+              document.getElementById("traumabedoccupied-count").innerHTML = traumaBedsOccupied;
+              document.getElementById("traumabedcleanup-count").innerHTML  = traumaBedsCleanup;
+            } 
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert('An Unknown Error Occured During Add Task.  Please Try Again Later.');
+          }
+        });
+      };
+
+      function sendDivertMessage(divertType, divertState) {
         var hospitalID = sessionStorage.getItem("hospitalID");
         var userID     = sessionStorage.getItem("userID");
 
