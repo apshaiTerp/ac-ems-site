@@ -278,9 +278,9 @@
               //Add Actions for Toggles
               $('#er-toggle').change(function() {
                 if ($(this).prop('checked')) {
-                  console.log("Opening");
+                  sendDivertMessage("er", "open");
                 } else {
-                  console.log("Diverting");
+                  sendDivertMessage("er", "divert");
                 }
               });
 
@@ -288,7 +288,15 @@
 
       };
 
+      function sendDivertMessage(divertType, divertState) {
+        console.log("The divertType: " + divertType);
+        console.log("The divertState: " + divertState);
+
+      };
+
       populateHospitalFields();
+
+
 
     </script>
   </body>
