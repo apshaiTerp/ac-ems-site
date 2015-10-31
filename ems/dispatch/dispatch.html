@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script type='text/javascript'>//<![CDATA[ 
+      //TODO - Remove
+      sessionStorage.setItem("userID", 445571);
+      sessionStorage.setItem("userRole", "Dispatch Staff");
+      sessionStorage.setItem("userDisplayName", "EMS Dispatcher 1");
+
+      var userID     = sessionStorage.getItem("userID");
+
+      if (userID == null) {
+        window.location = "./login.html";
+      }
+   </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/ambulance.png">
+
+    <title>TerrapinEMS Dispatcher Login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href='http://fonts.googleapis.com/css?family=Fredericka+the+Great|Architects+Daughter|Ubuntu' rel='stylesheet' type='text/css'/>
+    <link href="css/apshai.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css"/>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand active">TerrapinEMS Dispatch</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="./dispatch.html">Home</a></li>
+            <li><a href="./about.html">About</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="bg-login"></div>
+    <div class="jumbotron">
+      <div class="container">
+      </div>
+    </div>
+
+    <!-- Login Window Block -->
+    <div class="container">
+      <h3 align="center" id="name-header">Welcome to TerrapinEMS Dispatch</h3>
+      <h5 align="center" id="user-header">Logged in as USERNAME</h5>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading panel-title" id="dispatch-heading">Create New Dispatch Details
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label for="patient-name">Patient Name:</label>
+                  <input type="text" class="form-control" id="patient-name">
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-12">
+                <div class="form-group">
+                  <label for="patient-age">Patient Age Range:</label>
+                  <select class="form-control" id="patient-age">
+                    <option>Select an Age Range</option>
+                    <option>Unknown</option>
+                    <option>Child</option>
+                    <option>Teen</option>
+                    <option>Adult</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-12">
+                <div class="form-group">
+                  <label for="patient-gender">Patient Gender:</label>
+                  <select class="form-control" id="patient-gender">
+                    <option>Select a Gender</option>
+                    <option>Unknown</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-10 col-xs-12">
+                <div class="form-group">
+                  <label for="patient-address">Patient Address:</label>
+                  <input type="text" class="form-control" id="patient-address">
+                </div>
+              </div>
+              <div class="col-md-2 col-xs-12">
+                <div class="form-group">
+                  <label for="validate-button"> </label>
+                  <input type="button" class="form-control btn btn-primary" value="Validate Address" id="validate-button">
+                </div>
+              </div>
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label for="patient-complaint">Primary Patient Complaint:</label>
+                  <textarea class="form-control" rows="2" id="patient-complaint"></textarea>
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-12">
+                <div class="form-group">
+                  <label for="patient-severity">Patient Severity:</label>
+                  <select class="form-control" id="patient-severity">
+                    <option>Select a Severity Level</option>
+                    <option>Unknown</option>
+                    <option>Non-Critical</option>
+                    <option>Minor Trauma</option>
+                    <option>Severe Trauma</option>
+                    <option>Severe Burns</option>
+                    <option>STEMI</option>
+                    <option>Stroke</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-12">
+                <div class="form-group">
+                  <label for="reporter-name">Reported By:</label>
+                  <input type="text" class="form-control" id="reporter-name">
+                </div>
+              </div>
+              <div class="col-sm-offset-4 col-sm-4 col-xs-offset-3 col-xs-6">
+                <button type="button" class="btn btn-primary btn-block" id="select-providers">Select Providers</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div><hr></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading panel-title" id="dispatch-heading">Recommended EMS Providers
+            </div>
+          </div>
+          <div id="collapse-prov-panel" class="panel-collapse collapse">
+            <div class="row">
+              <div class="col-xs-12" id="prov1-name"><strong>Some Fire Department Name Here</strong>
+                <button type="button" class="btn btn-sm btn-primary pull-right" id="prov1-button">Select Provider</button>
+              </div>
+              <div class="col-sm-4 col-xs-6">
+                <strong>Estimated Time for Response : </strong><span class="label label-default" id="prov1-eta">00:00</span>
+              </div>
+              <div class="col-sm-4 col-xs-6">
+                <strong>Distance to Incident : </strong><span class="label label-default" id="prov1-dist">0.0 mi</span>
+              </div>
+              <div class="col-sm-4 col-xs-6">
+                <strong>Available Ambulances : </strong><span class="label label-default" id="prov1-ambs">0</span>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-xs-12" id="prov2-name"><strong>Some Fire Department Name Here</strong>
+                <button type="button" class="btn btn-sm btn-primary pull-right" id="prov2-button">Select Provider</button>
+              </div>
+              <div class="col-sm-4 col-xs-6">
+                <strong>Estimated Time for Response : </strong><span class="label label-default" id="prov2-eta">00:00</span>
+              </div>
+              <div class="col-sm-4 col-xs-6">
+                <strong>Distance to Incident : </strong><span class="label label-default" id="prov2-dist">0.0 mi</span>
+              </div>
+              <div class="col-sm-4 col-xs-6">
+                <strong>Available Ambulances : </strong><span class="label label-default" id="prov2-ambs">2</span>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-xs-12" id="prov3-name"><strong>Some Fire Department Name Here</strong>
+                <button type="button" class="btn btn-sm btn-primary pull-right" id="prov3-button">Select Provider</button>
+              </div>
+              <div class="col-sm-4 col-xs-6">
+                <strong>Estimated Time for Response : </strong><span class="label label-default" id="prov3-eta">00:00</span>
+              </div>
+              <div class="col-sm-4 col-xs-6">
+                <strong>Distance to Incident : </strong><span class="label label-default" id="prov3-dist">0.0 mi</span>
+              </div>
+              <div class="col-sm-4 col-xs-6">
+                <strong>Available Ambulances : </strong><span class="label label-default" id="prov3-ambs">2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Site footer -->
+    <div><hr></div>
+    <div class="container">
+      <hr>
+      <footer>
+        <p>&copy; TerrapinEMS Dispatch 2015 - A Project developed in conjunction with UMKC</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>
+
+    <script type='text/javascript'>//<![CDATA[ 
+
+      function populateUserName() {
+        var userDisplayName = sessionStorage.getItem("userDisplayName");
+        document.getElementById("user-header").innerHTML = 'Logged in as ' + userDisplayName;
+      };
+
+      populateUserName();
+
+      function showModalErrorDialog(titleText, messageText) {
+        BootstrapDialog.show({
+          title: titleText,
+          message: messageText,
+          type: "type-danger",
+          buttons: [{
+              id: 'btn-ok',   
+              icon: 'glyphicon glyphicon-check',       
+              label: 'OK',
+              cssClass: 'btn-primary', 
+              autospin: false,
+              action: function(dialogRef){    
+                  dialogRef.close();
+              }
+          }]
+        });
+      };
+
+      function assignDispatchToProvder(providerID) {
+        console.log("I want to assign this dispatch to " + providerID);
+      };
+
+      function validateAddress(useCoords) {
+        var patientAddress   = $('#patient-address').val().trim();
+
+        patientAddress = patientAddress.replace(/\s\s+/g, ' ');
+        var newAddress = patientAddress.split(' ').join('+');
+        var googleMapsURL = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyB0OPbkLdr319NnQll7B_RT8pyPYhahHqQ&address=" + newAddress;
+
+        console.log("Old Address: " + patientAddress);
+        console.log("New Address: " + newAddress);
+        console.log("Google URL:  " + googleMapsURL);
+
+        $.getJSON( googleMapsURL , { format: 'json' } )
+            .done(function(data) {
+              //TODO - Here's where we unravel the googlemaps json reply.  Always assume it's the first record
+              var results          = data['results'];
+              var firstResult      = results[0];
+              var formattedAddress = firstResult['formatted_address'];
+              var geometry         = firstResult['geometry'];
+              var location         = geometry['location'];
+              var incidentLat      = location['lat'];
+              var incidentLon      = location['lng'];
+
+              console.log("My formattedAddress is: " + formattedAddress);
+              console.log("My incidentLat is: " + incidentLat);
+              console.log("My incidentLon is: " + incidentLon);
+
+              $('#patient-address').val(formattedAddress.replace(', USA', ''));
+
+              if (useCoords == "yes") {
+                //This is where the provider lookup should happen
+                var providerURL = 'http://107.188.249.238:8080/ac-ems-system-rest-0.9/nearestambulance?incidentlat=' + incidentLat + '&incidentlon=' + incidentLon;
+
+                console.log("Nearest Ambulance URL: " + providerURL);
+
+                $.getJSON( providerURL, { format: 'json' } )
+                    .done(function(data) {
+                      var prov1Data = data[0];
+                      var prov2Data = data[1];
+                      var prov3Data = data[2];
+
+                      $('#prov1-name').html('<strong>' + prov1Data['providerName'] + '</strong><button type="button" class="btn btn-sm btn-primary pull-right" id="prov1-button" onClick="assignDispatchToProvder(' + prov1Data['providerID'] + ')">Select Provider</button>');
+                      $('#prov1-eta').html(prov1Data['etaString']);
+                      $('#prov1-dist').html(prov1Data['distanceText']);
+                      $('#prov1-ambs').html(prov1Data['availAmbulances'].length);
+
+                      $('#prov2-name').html('<strong>' + prov2Data['providerName'] + '</strong><button type="button" class="btn btn-sm btn-primary pull-right" id="prov2-button" onClick="assignDispatchToProvder(' + prov2Data['providerID'] + ')">Select Provider</button>');
+                      $('#prov2-eta').html(prov2Data['etaString']);
+                      $('#prov2-dist').html(prov2Data['distanceText']);
+                      $('#prov2-ambs').html(prov2Data['availAmbulances'].length);
+
+                      $('#prov3-name').html('<strong>' + prov3Data['providerName'] + '</strong><button type="button" class="btn btn-sm btn-primary pull-right" id="prov3-button" onClick="assignDispatchToProvder(' + prov3Data['providerID'] + ')">Select Provider</button>');
+                      $('#prov3-eta').html(prov3Data['etaString']);
+                      $('#prov3-dist').html(prov3Data['distanceText']);
+                      $('#prov3-ambs').html(prov3Data['availAmbulances'].length);
+
+                      $('#collapse-prov-panel').collapse("show");
+                })
+                    .fail(function() {
+                      showModalErrorDialog("Provider Lookup Error", "Failed while trying to select EMS Providers");
+                });
+
+
+              } else {
+                console.log("I didn't want the coordinates set to the session.");
+              }
+        });
+      };
+
+      document.getElementById("validate-button").onclick = function() {
+        var patientAddress   = $('#patient-address').val().trim();
+
+        if (patientAddress.length == 0) {
+          showModalErrorDialog("Validation Error", "No Patient Address was provided");
+          return;
+        }
+
+        validateAddress("yes");
+      };
+
+      document.getElementById("select-providers").onclick = function() {
+        //First thing first, we need to validate that all the inputs are correct.
+        var patientName      = $('#patient-name').val().trim();
+        var patientAge       = $('#patient-age').val();
+        var patientGender    = $('#patient-gender').val();
+        var patientAddress   = $('#patient-address').val().trim();
+        var patientComplaint = $('#patient-complaint').val().trim();
+        var patientSeverity  = $('#patient-severity').val();
+        var reportedByName   = $('#reporter-name').val().trim();
+
+
+        //Reverify the location and store the coordinates
+        validateAddress("yes");
+
+        if (patientName.length == 0) {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Patient Name was provided");
+          return;
+        }
+        if (patientAge == "Select an Age Range") {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Patient Age was selected");
+          return;
+        }
+        if (patientGender == "Select a Gender") {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Patient Gender was selected");
+          return;
+        }
+        if (patientAddress.length == 0) {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Patient Address was provided");
+          return;
+        }
+        if (patientComplaint.length == 0) {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Patient Complaint was provided");
+          return;
+        }
+        if (patientSeverity == "Select a Severity Level") {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Patient Severity was selected");
+          return;
+        }
+        if (reportedByName.length == 0) {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Reported By value was provided");
+          return;
+        }
+      };
+
+    </script>
+  </body>
+</html>
