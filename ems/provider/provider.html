@@ -205,12 +205,18 @@
 
         var tableURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9/provider/dispatch?result=table&id=" + providerID;
 
+        console.log("tableURL: " + tableURL);
+
         $.ajax({
           url: tableURL,
           type: 'GET',
           success: function (data) {
             var messageType = data['messageType'];
             var errorType   = data['errorType'];
+
+            console.log("I'm attempting the call...");
+            if (messageType != null) { console.log("messageType: " + messageType); }
+            if (errorType != null) { console.log("errorType: " + errorType); }
 
             if (messageType == "Request Successful") {
               //Do the stuff
