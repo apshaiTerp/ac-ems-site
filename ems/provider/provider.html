@@ -230,7 +230,7 @@
                 console.log("Processing row " + pos);
 
                 var curRow = dispatchList[pos];
-                tableBlock = tableBlock + '<tr id="tablerow' + pos + '"><td>' + curRow['dispatchID'] + '</td><td>' + curRow['dispatchDate'] + '</td><td>' + curRow['patientAddress'] + '</td><td>' + curRow['providerName'] + '</td><td>' + curRow['severityLevel'] + '</td><td><button type="button" class="btn btn-success btn-lg btn-block" onclick="assignAmbulanceToDispatch(' + curRow['dispatchID'] + ')"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Assign Ambulance</button></td></tr>';
+                tableBlock = tableBlock + '<tr id="tablerow' + pos + '"><td>' + curRow['dispatchID'] + '</td><td>' + curRow['dispatchDate'] + '</td><td>' + curRow['patientAddress'] + '</td><td>' + curRow['providerName'] + '</td><td>' + curRow['severityLevel'] + '</td><td><button type="button" class="btn btn-success btn-block" onclick="assignAmbulanceToDispatch(' + curRow['dispatchID'] + ')"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Assign Ambulance</button></td></tr>';
               }
 
               console.log("Outside the for loop, about to update the table-body");
