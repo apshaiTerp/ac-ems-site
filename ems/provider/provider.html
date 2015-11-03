@@ -222,7 +222,12 @@
               //Do the stuff
               var dispatchList    = data['resultList'];
               var tableBlock   = " ";
+
+              console.log("dispatchList.length: " + dispatchList.length);
+
               for (var pos = 0; pos < dispatchList.length; pos++) {
+                console.log("Processing row " + pos);
+
                 var curRow = dispatchList[pos];
                 tableBlock = tableBlock + '<tr id="tablerow' + pos + '"><td>' + curRow['dispatchID'] + '</td><td>' + curRow['dispatchDate'] + '</td><td>' + curRow['patientAddress'] + '</td><td>' + curRow['providerName'] + '</td><td>' + curRow['severityLevel'] + '</td><td><button type="button" class="btn btn-success btn-lg btn-block" onclick="assignAmbulanceToDispatch(' + curRow['dispatchID'] + ')"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Assign Ambulance</button></td></tr>';
               }
