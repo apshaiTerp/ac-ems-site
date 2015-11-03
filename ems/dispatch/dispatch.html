@@ -328,7 +328,7 @@
         var jsonBody = '{ "patientName" : "' + patientName + '", "patientGender" : "' + patientGender + '", "patientAgeRange" : "' + patientAge + '", "patientAddress" : "' + patientAddress + '", "patientComplaint" : "' + patientComplaint + '", "reportedSeverity" : "' + patientSeverity + '", "reportedByName" : "' + reportedByName + '", "dispatchUserID" : ' + userID + ', "providerID" : ' + providerID + ', "incidentLat" : ' + incidentLat + ', "incidentLon" : ' + incidentLon + ' }';
         $.ajax ({
           type: 'POST',
-          url:  'http://107.188.249.238:8080/ac-ems-system-rest-0.9/login',
+          url:  'http://107.188.249.238:8080/ac-ems-system-rest-0.9/dispatch',
           data: jsonBody,
           contentType: "application/json",
           dataType: 'json',
