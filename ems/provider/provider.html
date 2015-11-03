@@ -76,21 +76,6 @@
           </div>
           <div class="panel-body">
             <div class="row" id="summary-body">
-              <div class="col-sm-4 col-xs-6">
-                <button type="button" class="btn btn-success btn-lg btn-block">
-                  <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 3001 - Available
-                </button>
-              </div>
-              <div class="col-sm-4 col-xs-6">
-                <button type="button" class="btn btn-success btn-lg btn-block">
-                  <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 3002 - Available
-                </button>
-              </div>
-              <div class="col-sm-4 col-xs-6">
-                <button type="button" class="btn btn-primary btn-lg btn-block">
-                  <span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> 3003 - Assigned
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -106,8 +91,24 @@
           </div>
           <div class="panel-body">
             <div class="row">
-              <div class="col-xs-12">
-                <div class="alert alert-info" role="alert">There are no dispatches pending assignment.</div>
+              <div class="col-xs-12" id="dispatch-table">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Event ID</th>
+                      <th>Assigned Ambulance</th>
+                      <th>Current Event State</th>
+                      <th>Severity Level</th>
+                      <th>Destination Hospital</th>
+                      <th>Event Start Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="event-table-body">
+                    <tr>
+                      <div class="alert alert-info" role="alert">There are no dispatches pending assignment.</div>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
