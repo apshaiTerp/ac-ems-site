@@ -82,7 +82,7 @@
       </div>
     </div>
     <div><hr></div>
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
           <div class="panel panel-primary">
@@ -95,20 +95,22 @@
                 <table class="table">
                   <thead>
                     <tr>
-                      <th>Event ID</th>
-                      <th>Assigned Ambulance</th>
-                      <th>Current Event State</th>
+                      <th>Dispatch ID</th>
+                      <th>Dispatch Created Date</th>
+                      <th>Patient Address</th>
+                      <th>Patient Info</th>
                       <th>Severity Level</th>
-                      <th>Destination Hospital</th>
-                      <th>Event Start Date</th>
+                      <th>Assignment</th>
                     </tr>
                   </thead>
                   <tbody id="event-table-body">
                     <tr>
-                      <div class="alert alert-info" role="alert">There are no dispatches pending assignment.</div>
                     </tr>
                   </tbody>
                 </table>
+                <div id="alert-show">
+                  <div class="alert alert-info" role="alert">There are no dispatches pending assignment.</div>
+                </div>
               </div>
             </div>
           </div>
@@ -116,7 +118,7 @@
       </div>
     </div>
     <div><hr></div>
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
           <div class="panel panel-primary">
@@ -157,6 +159,10 @@
         window.location = "./login.html";
       };
 
+      function assignAmbulanceToDispatch(dispatchID) {
+        console.log("Preparing to assign an ambilance to dispatchID " + dispatchID);
+      };
+
       function populateUserName() {
         var userDisplayName = sessionStorage.getItem("userDisplayName");
         var providerID      = sessionStorage.getItem("providerID");
@@ -172,6 +178,8 @@
               var ambulances         = data['ambulances'];
               var availAmbulances    = data['availAmbulances'];
               var assignedAmbulances = data['assignedAmbulances'];
+
+              sessionStorage.setItem("availAmbulances", JSON.stringify(availAmbulances));
 
               //Fill out the provider header fields
               $('#name-header').html(providerName);
@@ -192,6 +200,43 @@
 
       populateUserName();
 
+      function populateUnassignedDispatchTable() {
+        var providerID      = sessionStorage.getItem("providerID");
+
+        var tableURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9/provider/dispatch?result=table&id=" + providerID;
+
+        $.ajax({
+          url: tableURL,
+          type: 'GET',
+          success: function (data) {
+            var messageType = data['messageType'];
+            var errorType   = data['errorType'];
+
+            if (messageType == "Request Successful") {
+              //Do the stuff
+              var dispatchList    = data['resultList'];
+              var tableBlock   = " ";
+              for (var pos = 0; pos < dispatchList.length; pos++) {
+                var curRow = dispatchList[pos];
+                tableBlock = tableBlock + '<tr id="tablerow' + pos + '"><td>' + curRow['dispatchID'] + '</td><td>' + curRow['dispatchDate'] + '</td><td>' + curRow['patientAddress'] + '</td><td>' + curRow['providerName'] + '</td><td>' + curRow['severityLevel'] + '</td><td><button type="button" class="btn btn-success btn-lg btn-block" onclick="assignAmbulanceToDispatch(' + curRow['dispatchID'] + ')"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Assign Ambulance</button></td></tr>';
+              }
+              $('#dispatch-table-body').html(tableBlock);
+
+              if (dispatchList.length == 0) {
+                $('#alert-show').html('<div class="alert alert-info" role="alert">There are no dispatches pending assignment.</div>');
+              } else {
+                $('#alert-show').html("");
+              }
+            } else {
+              var errorMessage = data['errorMessage'];
+              console.log("Dispatch Error: " + errorType + " - " + errorMessage);
+            }
+          },
+          error: function (request, status, error) {
+            console.log("Something with the call failed!");
+          }
+        });
+      };
 
 
     </script>
