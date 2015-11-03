@@ -125,7 +125,7 @@
                   <select class="form-control" id="patient-severity">
                     <option>Select a Severity Level</option>
                     <option>Unknown</option>
-                    <option>Non-Critical</option>
+                    <option>Non-Critical Injuries</option>
                     <option>Minor Trauma</option>
                     <option>Severe Trauma</option>
                     <option>Severe Burns</option>
@@ -227,6 +227,8 @@
       function populateUserName() {
         var userDisplayName = sessionStorage.getItem("userDisplayName");
         document.getElementById("user-header").innerHTML = 'Logged in as ' + userDisplayName;
+
+        $('#collapse-prov-panel').collapse("hide");
       };
 
       populateUserName();
@@ -249,8 +251,108 @@
         });
       };
 
-      function assignDispatchToProvder(providerID) {
+      function showModalSuccessDialog(titleText, messageText) {
+        BootstrapDialog.show({
+          title: titleText,
+          message: messageText,
+          type: "type-success",
+          buttons: [{
+              id: 'btn-ok',   
+              icon: 'glyphicon glyphicon-check',       
+              label: 'OK',
+              cssClass: 'btn-primary', 
+              autospin: false,
+              action: function(dialogRef){    
+                  dialogRef.close();
+              }
+          }]
+        });
+      };
+
+      function resetInputs() {
+        $('#patient-name').val("");
+        $('#patient-age').val("Select an Age Range");
+        $('#patient-gender').val("Select a Gender");
+        $('#patient-address').val("");
+        $('#patient-complaint').val("");
+        $('#patient-severity').val("Select a Severity Level");
+        $('#reporter-name').val("");
+
+        $('#collapse-prov-panel').collapse("hide");
+      }
+
+      function assignDispatchToProvder(providerID, incidentLat, incidentLon) {
         console.log("I want to assign this dispatch to " + providerID);
+
+        //First thing first, we need to validate that all the inputs are correct.
+        var patientName      = $('#patient-name').val().trim();
+        var patientAge       = $('#patient-age').val();
+        var patientGender    = $('#patient-gender').val();
+        var patientAddress   = $('#patient-address').val().trim();
+        var patientComplaint = $('#patient-complaint').val().trim();
+        var patientSeverity  = $('#patient-severity').val();
+        var reportedByName   = $('#reporter-name').val().trim();
+
+        if (patientName.length == 0) {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Patient Name was provided");
+          return;
+        }
+        if (patientAge == "Select an Age Range") {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Patient Age was selected");
+          return;
+        }
+        if (patientGender == "Select a Gender") {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Patient Gender was selected");
+          return;
+        }
+        if (patientAddress.length == 0) {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Patient Address was provided");
+          return;
+        }
+        if (patientComplaint.length == 0) {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Patient Complaint was provided");
+          return;
+        }
+        if (patientSeverity == "Select a Severity Level") {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Patient Severity was selected");
+          return;
+        }
+        if (reportedByName.length == 0) {
+          showModalErrorDialog("Dispatch Information Incomplete", "No Reported By value was provided");
+          return;
+        }
+
+        var userID = sessionStorage.getItem("userID");
+
+        //POST command to create the dispatch
+        var jsonBody = '{ "patientName" : "' + patientName + '", "patientGender" : "' + patientGender + '", "patientAgeRange" : "' + patientAge + '", "patientAddress" : "' + patientAddress + '", "patientComplaint" : "' + patientComplaint + '", "reportedSeverity" : "' + patientSeverity + '", "reportedByName" : "' + reportedByName + '", "dispatchUserID" : ' + userID + ', "providerID" : ' + providerID + ', "incidentLat" : ' + incidentLat + ', "incidentLon" : ' + incidentLon + ' }';
+        $.ajax ({
+          type: 'POST',
+          url:  'http://107.188.249.238:8080/ac-ems-system-rest-0.9/login',
+          data: jsonBody,
+          contentType: "application/json",
+          dataType: 'json',
+          success: function(data) {
+            var messageType = data['messageType'];
+            var errorType   = data['errorType'];
+
+            console.log("messageType: " + messageType);
+            console.log("errorType: " + errorType);
+
+            if (messageType == "Success") {
+              showModalSuccessDialog("Dispatch Created", 'The dispatch was successfully created.\nClick on the Active Dispatch tab to view this event and all other active dispatches.');
+
+              resetInputs();
+            } else {
+              var errorMessage = data['errorMessage'];
+
+              showModalErrorDialog(errorType, errorMessage);
+            }
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            showModalErrorDialog("Dispatch Creation Error", "An unknown error occurred during dispatch creation.");
+          }
+        });
       };
 
       function validateAddress(useCoords) {
@@ -293,17 +395,17 @@
                       var prov2Data = data[1];
                       var prov3Data = data[2];
 
-                      $('#prov1-name').html('<strong>' + prov1Data['providerName'] + '</strong><button type="button" class="btn btn-sm btn-primary pull-right" id="prov1-button" onClick="assignDispatchToProvder(' + prov1Data['providerID'] + ')">Select Provider</button>');
+                      $('#prov1-name').html('<strong>' + prov1Data['providerName'] + '</strong><button type="button" class="btn btn-sm btn-primary pull-right" id="prov1-button" onClick="assignDispatchToProvder(' + prov1Data['providerID'] + ', ' + incidentLat + ', ' + incidentLon + ')">Select Provider</button>');
                       $('#prov1-eta').html(prov1Data['etaString']);
                       $('#prov1-dist').html(prov1Data['distanceText']);
                       $('#prov1-ambs').html(prov1Data['availAmbulances'].length);
 
-                      $('#prov2-name').html('<strong>' + prov2Data['providerName'] + '</strong><button type="button" class="btn btn-sm btn-primary pull-right" id="prov2-button" onClick="assignDispatchToProvder(' + prov2Data['providerID'] + ')">Select Provider</button>');
+                      $('#prov2-name').html('<strong>' + prov2Data['providerName'] + '</strong><button type="button" class="btn btn-sm btn-primary pull-right" id="prov2-button" onClick="assignDispatchToProvder(' + prov2Data['providerID'] + ', ' + incidentLat + ', ' + incidentLon + ')">Select Provider</button>');
                       $('#prov2-eta').html(prov2Data['etaString']);
                       $('#prov2-dist').html(prov2Data['distanceText']);
                       $('#prov2-ambs').html(prov2Data['availAmbulances'].length);
 
-                      $('#prov3-name').html('<strong>' + prov3Data['providerName'] + '</strong><button type="button" class="btn btn-sm btn-primary pull-right" id="prov3-button" onClick="assignDispatchToProvder(' + prov3Data['providerID'] + ')">Select Provider</button>');
+                      $('#prov3-name').html('<strong>' + prov3Data['providerName'] + '</strong><button type="button" class="btn btn-sm btn-primary pull-right" id="prov3-button" onClick="assignDispatchToProvder(' + prov3Data['providerID'] + ', ' + incidentLat + ', ' + incidentLon + ')">Select Provider</button>');
                       $('#prov3-eta').html(prov3Data['etaString']);
                       $('#prov3-dist').html(prov3Data['distanceText']);
                       $('#prov3-ambs').html(prov3Data['availAmbulances'].length);
@@ -329,7 +431,7 @@
           return;
         }
 
-        validateAddress("yes");
+        validateAddress("no");
       };
 
       document.getElementById("select-providers").onclick = function() {
@@ -341,10 +443,6 @@
         var patientComplaint = $('#patient-complaint').val().trim();
         var patientSeverity  = $('#patient-severity').val();
         var reportedByName   = $('#reporter-name').val().trim();
-
-
-        //Reverify the location and store the coordinates
-        validateAddress("yes");
 
         if (patientName.length == 0) {
           showModalErrorDialog("Dispatch Information Incomplete", "No Patient Name was provided");
@@ -374,6 +472,9 @@
           showModalErrorDialog("Dispatch Information Incomplete", "No Reported By value was provided");
           return;
         }
+
+        //Reverify the location and store the coordinates
+        validateAddress("yes");
       };
 
     </script>
