@@ -238,6 +238,11 @@
         });
       };
 
+      $(document).ready(function() {
+        var auto_refresh1 = setInterval(populateUnassignedDispatchTable, 5000);
+
+        populateUnassignedDispatchTable();
+      });
 
     </script>
   </body>
