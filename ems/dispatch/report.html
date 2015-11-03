@@ -170,7 +170,7 @@
               //Do the stuff
               var dispatchList = data['resultList'];
               var tableBlock   = " ";
-              for (var pos = 0; pos < results.length; pos++) {
+              for (var pos = 0; pos < dispatchList.length; pos++) {
                 var curRow = dispatchList[pos];
                 tableBlock = tableBlock + '<tr id="tablerow' + pos + '"><td>' + curRow['dispatchID'] + '</td><td>' + curRow['dispatchDate'] + '</td><td>' + curRow['patientAddress'] + '</td><td>' + curRow['severityLevel'] + '</td><td>' + curRow['providerName'] + '</td></tr>';
               }
