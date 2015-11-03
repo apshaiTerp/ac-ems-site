@@ -21,7 +21,7 @@
     <meta name="author" content="">
     <link rel="icon" href="img/ambulance.png">
 
-    <title>TerrapinEMS Dispatcher Login</title>
+    <title>TerrapinEMS Dispatcher - Create Dispatch</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -44,8 +44,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="./dispatch.html">Home</a></li>
-            <li><a href="./about.html">About</a></li>
+            <li class="active"><a>Create Dispatch</a></li>
+            <li><a href="./report.html">View Active Dispatches</a></li>
           </ul>
         </div><!--/.navbar-collapse -->
       </div>
@@ -326,6 +326,9 @@
 
         //POST command to create the dispatch
         var jsonBody = '{ "patientName" : "' + patientName + '", "patientGender" : "' + patientGender + '", "patientAgeRange" : "' + patientAge + '", "patientAddress" : "' + patientAddress + '", "patientComplaint" : "' + patientComplaint + '", "reportedSeverity" : "' + patientSeverity + '", "reportedByName" : "' + reportedByName + '", "dispatchUserID" : ' + userID + ', "providerID" : ' + providerID + ', "incidentLat" : ' + incidentLat + ', "incidentLon" : ' + incidentLon + ' }';
+
+        console.log("jsonBody: " + jsonBody);
+
         $.ajax ({
           type: 'POST',
           url:  'http://107.188.249.238:8080/ac-ems-system-rest-0.9/dispatch',

@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script type='text/javascript'>//<![CDATA[ 
+      //TODO - Remove
+      sessionStorage.setItem("userID", 445571);
+      sessionStorage.setItem("userRole", "Dispatch Staff");
+      sessionStorage.setItem("userDisplayName", "EMS Dispatcher 1");
+
+      var userID     = sessionStorage.getItem("userID");
+
+      if (userID == null) {
+        window.location = "./login.html";
+      }
+   </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/ambulance.png">
+
+    <title>TerrapinEMS Dispatcher - View Active Dispatches</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href='http://fonts.googleapis.com/css?family=Fredericka+the+Great|Architects+Daughter|Ubuntu' rel='stylesheet' type='text/css'/>
+    <link href="css/apshai.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css"/>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand active">TerrapinEMS Dispatch</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="./dispatch.html">Create Dispatch</a></li>
+            <li class="active"><a>View Active Dispatches</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="bg-login"></div>
+    <div class="jumbotron">
+      <div class="container">
+      </div>
+    </div>
+
+    <!-- Login Window Block -->
+    <div class="container">
+      <h3 align="center" id="name-header">Welcome to TerrapinEMS Dispatch</h3>
+      <h5 align="center" id="user-header">Logged in as USERNAME</h5>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading panel-title" id="dispatch-heading">Dispatches Pending Ambulance Assignment
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Dispatch ID</th>
+                      <th>Dispatch Created Date</th>
+                      <th>Patient Address</th>
+                      <th>Severity Level</th>
+                      <th>Provider Name</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dispatch-table-body">
+                    <tr>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading panel-title" id="dispatch-heading">Active Dispatch Response Events
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Event ID</th>
+                      <th>Assigned Ambulance</th>
+                      <th>Current Event State</th>
+                      <th>Severity Level</th>
+                      <th>Destination Hospital</th>
+                      <th>Event Start Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="event-table-body">
+                    <tr></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Site footer -->
+    <div><hr></div>
+    <div class="container">
+      <hr>
+      <footer>
+        <p>&copy; TerrapinEMS Dispatch 2015 - A Project developed in conjunction with UMKC</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>
+
+    <script type='text/javascript'>//<![CDATA[ 
+
+      function populateUserName() {
+        var userDisplayName = sessionStorage.getItem("userDisplayName");
+        document.getElementById("user-header").innerHTML = 'Logged in as ' + userDisplayName;
+
+        $('#collapse-prov-panel').collapse("hide");
+      };
+
+      populateUserName();
+
+      function populateUnassignedDispatchTable() {
+        var tableURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9/dispatch?result=table";
+
+        $.ajax({
+          url: tableURL,
+          type: 'GET',
+          success: function (data) {
+            var messageType = data['messageType'];
+            var errorType   = data['errorType'];
+
+            console.log("messageType: " + messageType);
+            console.log("errorType: " + errorType);
+
+            if (messageType == "Request Successful") {
+              //Do the stuff
+              var dispatchList = data['resultList'];
+              var tableBlock   = " ";
+              for (var pos = 0; pos < results.length; pos++) {
+                var curRow = dispatchList[pos];
+                tableBlock = tableBlock + '<tr id="tablerow' + pos + '"><td>' + curRow['dispatchID'] + '</td><td>' + curRow['dispatchDate'] + '</td><td>' + curRow['patientAddress'] + '</td><td>' + curRow['severityLevel'] + '</td><td>' + curRow['providerName'] + '</td></tr>';
+              }
+              $('#dispatch-table-body').html(tableBlock);
+            } else {
+              var errorMessage = data['errorMessage'];
+              console.log("Dispatch Error: " + errorType + " - " + errorMessage);
+            }
+          },
+          error: function (request, status, error) {
+            console.log("Something with the call failed!");
+          }
+        });
+      };
+
+      $(document).ready(function() {
+        var auto_refresh1 = setInterval(populateUnassignedDispatchTable, 5000);
+
+        populateUnassignedDispatchTable();
+      });
+
+    </script>
+  </body>
+</html>
