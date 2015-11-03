@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script type='text/javascript'>//<![CDATA[ 
+      //TODO - Remove
+      sessionStorage.setItem("userID", 445174);
+      sessionStorage.setItem("providerID", 1230019);
+      sessionStorage.setItem("userRole", "EMS Staff");
+      sessionStorage.setItem("userDisplayName", "EMS Provider 1230019 - User 1");
+
+      var userID     = sessionStorage.getItem("userID");
+      var providerID = sessionStorage.getItem("providerID");
+
+      if (userID == null) {
+        window.location = "./login.html";
+      }
+      if (providerID == null) {
+        window.location = "./login.html";
+      }
+   </script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/ems.png">
+
+    <title>TerrapinEMS EMS Provider Administration</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href='http://fonts.googleapis.com/css?family=Fredericka+the+Great|Architects+Daughter|Ubuntu' rel='stylesheet' type='text/css'>
+    <link href="css/apshai.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand active">TerrapinEMS EMS Admin</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="bg-login"></div>
+    <div class="jumbotron">
+      <div class="container">
+      </div>
+    </div>
+
+    <!-- Login Window Block -->
+    <div class="container">
+      <h3 align="center" id="name-header">The EMS Provider Name Goes Here</h3>
+      <h5 align="center" id="address-header">This is an address</h5>
+      <h5 align="center" id="user-header">Logged in as USERNAME</h5>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading panel-title" id="summary-heading">Ambulance Summary
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="row" id="summary-body">
+              <div class="col-sm-4 col-xs-6">
+                <button type="button" class="btn btn-success btn-lg btn-block">
+                  <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 3001 - Available
+                </button>
+              </div>
+              <div class="col-sm-4 col-xs-6">
+                <button type="button" class="btn btn-success btn-lg btn-block">
+                  <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 3002 - Available
+                </button>
+              </div>
+              <div class="col-sm-4 col-xs-6">
+                <button type="button" class="btn btn-primary btn-lg btn-block">
+                  <span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> 3003 - Assigned
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div><hr></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading panel-title" id="pending-heading">Pending Dispatches
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="alert alert-info" role="alert">There are no dispatches pending assignment.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div><hr></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading panel-title" id="assigned-heading">Assigned Ambulances
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="alert alert-info" role="alert">No Ambulances are on assignment.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div><hr></div>
+    <!-- Site footer -->
+    <div class="container">
+      <hr>
+      <footer>
+        <p>&copy; TerrapinEMS Dispatch 2015 - A Project developed in conjunction with UMKC</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script type='text/javascript'>//<![CDATA[ 
+
+      function logOutFunction() {
+        sessionStorage.clear();
+        localStorage.clear();
+        window.location = "./login.html";
+      };
+
+      function populateUserName() {
+        var userDisplayName = sessionStorage.getItem("userDisplayName");
+        var providerID      = sessionStorage.getItem("providerID");
+
+        document.getElementById("user-header").innerHTML = 'Logged in as ' + userDisplayName;
+
+        var providerURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9/provider?id=" + providerID;
+        $.getJSON( providerURL, { format: 'json'} )
+            .done(function(data) {          
+
+              var providerName       = data['providerName'];
+              var providerAddress    = data['providerAddress'];
+              var ambulances         = data['ambulances'];
+              var availAmbulances    = data['availAmbulances'];
+              var assignedAmbulances = data['assignedAmbulances'];
+
+              //Fill out the provider header fields
+              $('#name-header').html(providerName);
+              $('#address-header').html(providerAddress);
+
+              //Now we need to work through the buttons that show ambulance status
+              var statusBody = "";
+              for (pos = 0; pos < availAmbulances.length; pos++) {
+                statusBody = statusBody + '<div class="col-sm-4 col-xs-6"><button type="button" class="btn btn-success btn-lg btn-block"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> ' + availAmbulances[pos] + ' - Available</button></div>';
+              }
+              for (pos = 0; pos < assignedAmbulances.length; pos++) {
+                statusBody = statusBody + '<div class="col-sm-4 col-xs-6"><button type="button" class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> ' + availAmbulances[pos] + ' - Assigned</button></div>';
+              }
+
+              $('#summary-body').html(statusBody);
+        });
+      };
+
+      populateUserName();
+
+
+
+    </script>
+  </body>
+</html>
