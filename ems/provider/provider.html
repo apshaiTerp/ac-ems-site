@@ -144,7 +144,9 @@
                     <tr></tr>
                   </tbody>
                 </table>
-                <div id="ambulance-alert-show"><div class="alert alert-info" role="alert">No Ambulances are on assignment.</div></div>
+                <div id="ambulance-alert-show">
+                  <div class="alert alert-info" role="alert">No Ambulances are on assignment.</div>
+                </div>
               </div>
             </div>
           </div>
@@ -363,8 +365,10 @@
 
       $(document).ready(function() {
         var auto_refresh1 = setInterval(populateUnassignedDispatchTable, 5000);
+        var auto_refresh2 = setInterval(populateActiveEventTable, 5000);
 
         populateUnassignedDispatchTable();
+        populateActiveEventTable();
       });
 
     </script>
