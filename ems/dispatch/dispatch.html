@@ -42,6 +42,9 @@
             <li class="active"><a>Create Dispatch</a></li>
             <li><a href="./report.html">View Active Dispatches</a></li>
           </ul>
+          <form class="navbar-form navbar-right">
+            <a href="./index.html" id="logout-button" class="btn btn-success" onclick="logOutFunction()" type="button">Log Out</a>
+          </form>
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
@@ -218,6 +221,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>
 
     <script type='text/javascript'>//<![CDATA[ 
+
+      function logOutFunction() {
+        sessionStorage.clear();
+        localStorage.clear();
+        window.location = "./login.html";
+      };
 
       function populateUserName() {
         var userDisplayName = sessionStorage.getItem("userDisplayName");
