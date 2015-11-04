@@ -88,6 +88,9 @@
                     </tr>
                   </tbody>
                 </table>
+                <div id="dispatch-alert-show">
+                  <div class="alert alert-info" role="alert">There are no dispatches pending assignment.</div>
+                </div>
               </div>
             </div>
           </div>
@@ -120,6 +123,9 @@
                     <tr></tr>
                   </tbody>
                 </table>
+                <div id="event-alert-show">
+                  <div class="alert alert-info" role="alert">There are no active dispatch events.</div>
+                </div>
               </div>
             </div>
           </div>
@@ -173,6 +179,12 @@
                 tableBlock = tableBlock + '<tr id="tablerow' + pos + '"><td>' + curRow['dispatchID'] + '</td><td>' + curRow['dispatchDate'] + '</td><td>' + curRow['patientAddress'] + '</td><td>' + curRow['severityLevel'] + '</td><td>' + curRow['providerName'] + '</td></tr>';
               }
               $('#dispatch-table-body').html(tableBlock);
+
+              if (dispatchList.length == 0) {
+                $('#dispatch-alert-show').html('<div class="alert alert-info" role="alert">There are no dispatches pending assignment.</div>');
+              } else {
+                $('#dispatch-alert-show').html("");
+              }
             } else {
               var errorMessage = data['errorMessage'];
               console.log("Dispatch Error: " + errorType + " - " + errorMessage);
@@ -203,6 +215,12 @@
                 tableBlock = tableBlock + '<tr id="tablerow' + pos + '"><td>' + curRow['eventID'] + '</td><td>' + curRow['dispatchID'] + '</td><td>' + curRow['ambulanceID'] + '</td><td>' + curRow['eventState'] + '</td><td>' + curRow['patientSeverity'] + '</td><td>' + curRow['destinationHospital'] + '</td><td>' + curRow['eventStartDate'] + '</td></tr>';
               }
               $('#event-table-body').html(tableBlock);
+
+              if (dispatchList.length == 0) {
+                $('#dispatch-alert-show').html('<div class="alert alert-info" role="alert">There are no active dispatch events.</div>');
+              } else {
+                $('#dispatch-alert-show').html("");
+              }
             } else {
               var errorMessage = data['errorMessage'];
               console.log("Dispatch Error: " + errorType + " - " + errorMessage);
