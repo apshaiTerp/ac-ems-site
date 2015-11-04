@@ -217,9 +217,9 @@
               $('#event-table-body').html(tableBlock);
 
               if (dispatchList.length == 0) {
-                $('#dispatch-alert-show').html('<div class="alert alert-info" role="alert">There are no active dispatch events.</div>');
+                $('#event-alert-show').html('<div class="alert alert-info" role="alert">There are no active dispatch events.</div>');
               } else {
-                $('#dispatch-alert-show').html("");
+                $('#event-alert-show').html("");
               }
             } else {
               var errorMessage = data['errorMessage'];
