@@ -150,8 +150,7 @@
               sessionStorage.setItem("userRole", curUserRole);
               sessionStorage.setItem("userDisplayName", curUserDisplayName);
 
-              //window.location = "./dispatch.html";
-              alert("Good!  Will move on soon.");
+              window.location = "./report.html";
             } else {
               var errorMessage = data['errorMessage'];
               document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>' + errorMessage + '</span>   Please try again.</strong>';
