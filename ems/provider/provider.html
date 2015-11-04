@@ -275,7 +275,7 @@
                 statusBody = statusBody + '<div class="col-sm-4 col-xs-6"><button type="button" class="btn btn-success btn-lg btn-block"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> ' + availAmbulances[pos] + ' - Available</button></div>';
               }
               for (pos = 0; pos < assignedAmbulances.length; pos++) {
-                statusBody = statusBody + '<div class="col-sm-4 col-xs-6"><button type="button" class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> ' + availAmbulances[pos] + ' - Assigned</button></div>';
+                statusBody = statusBody + '<div class="col-sm-4 col-xs-6"><button type="button" class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> ' + assignedAmbulances[pos] + ' - Assigned</button></div>';
               }
 
               $('#summary-body').html(statusBody);
