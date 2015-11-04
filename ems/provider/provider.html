@@ -3,12 +3,6 @@
 <html lang="en">
   <head>
     <script type='text/javascript'>//<![CDATA[ 
-      //TODO - Remove
-      sessionStorage.setItem("userID", 445174);
-      sessionStorage.setItem("providerID", 1230019);
-      sessionStorage.setItem("userRole", "EMS Staff");
-      sessionStorage.setItem("userDisplayName", "EMS Provider 1230019 - User 1");
-
       var userID     = sessionStorage.getItem("userID");
       var providerID = sessionStorage.getItem("providerID");
 
@@ -49,7 +43,12 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
+            <li class="active"><a>Create Dispatch</a></li>
+            <li><a href="./report.html">View Active Dispatches</a></li>
           </ul>
+          <form class="navbar-form navbar-right">
+            <a href="../index.html" id="logout-button" class="btn btn-success" onclick="logOutFunction()" type="button">Log Out</a>
+          </form>
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
@@ -197,14 +196,10 @@
       };
 
       function postAmbulanceDispatch(dispatchID, ambulanceID) {
-        console.log("postAmbulanceDispatch...");
-        console.log("dispatchID: " + dispatchID);
-        console.log("ambulanceID: " + ambulanceID);
-
         var userID = sessionStorage.getItem("userID");
 
         var jsonBody = '{ "dispatchID" : ' + dispatchID + ', "ambulanceID" : ' + ambulanceID + ', "userID" : ' + userID + ' }';
-        console.log("jsonBody: " + jsonBody);
+        //console.log("jsonBody: " + jsonBody);
 
         $.ajax ({
           type: 'POST',
@@ -215,9 +210,6 @@
           success: function(data) {
             var messageType = data['messageType'];
             var errorType   = data['errorType'];
-
-            console.log("messageType: " + messageType);
-            console.log("errorType: " + errorType);
 
             if (messageType == "Success") {
               populateUserName();
@@ -288,8 +280,7 @@
         var providerID      = sessionStorage.getItem("providerID");
 
         var tableURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9/provider/dispatch?result=table&id=" + providerID;
-
-        console.log("tableURL: " + tableURL);
+        //console.log("tableURL: " + tableURL);
 
         $.ajax({
           url: tableURL,
