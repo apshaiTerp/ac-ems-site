@@ -182,14 +182,43 @@
         console.log("postAmbulanceDispatch...");
         console.log("dispatchID: " + dispatchID);
         console.log("ambulanceID: " + ambulanceID);
-      }
+
+        var userID = sessionStorage.getItem("userID");
+
+        var jsonBody = '{ "dispatchID" : ' + dispatchID + ', "ambulanceID" : ' + ambulanceID + ', "userID" : ' + userID + ' }';
+        console.log("jsonBody: " + jsonBody);
+
+        $.ajax ({
+          type: 'POST',
+          url:  'http://107.188.249.238:8080/ac-ems-system-rest-0.9/provider/dispatch',
+          data: jsonBody,
+          contentType: "application/json",
+          dataType: 'json',
+          success: function(data) {
+            var messageType = data['messageType'];
+            var errorType   = data['errorType'];
+
+            console.log("messageType: " + messageType);
+            console.log("errorType: " + errorType);
+
+            if (messageType == "Success") {
+              populateUserName();
+
+            } else {
+              var errorMessage = data['errorMessage'];
+              console.log("Problem: " + errorType + " - " + errorMessage)
+              alert(errorType, errorMessage);
+            }
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert("Dispatch Creation Error", "An unknown error occurred during dispatch creation.");
+          }
+        });
+
+      };
 
       function assignAmbulanceToDispatch(dispatchID) {
-        console.log("Preparing to assign an ambilance to dispatchID " + dispatchID);
-
         var availAmbulances = JSON.parse(sessionStorage.getItem("availAmbulances"));
-
-        console.log("There are " + availAmbulances.length + " ambulances available for assignment");
 
         var buttonBody = '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>';
         for (pos = 0; pos < availAmbulances.length; pos++) {
@@ -251,26 +280,15 @@
             var messageType = data['messageType'];
             var errorType   = data['errorType'];
 
-            console.log("I'm attempting the call...");
-
             if (messageType == "Request Successful") {
-
-              console.log("I'm in the request successful branch...");
-              
               //Do the stuff
               var dispatchList    = data['resultList'];
               var tableBlock   = " ";
 
-              console.log("dispatchList.length: " + dispatchList.length);
-
               for (var pos = 0; pos < dispatchList.length; pos++) {
-                console.log("Processing row " + pos);
-
                 var curRow = dispatchList[pos];
                 tableBlock = tableBlock + '<tr id="tablerow' + pos + '"><td>' + curRow['dispatchID'] + '</td><td>' + curRow['dispatchDate'] + '</td><td>' + curRow['patientAddress'] + '</td><td>' + curRow['providerName'] + '</td><td>' + curRow['severityLevel'] + '</td><td><button type="button" class="btn btn-success btn-block" onclick="assignAmbulanceToDispatch(' + curRow['dispatchID'] + ')"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Assign Ambulance</button></td></tr>';
               }
-
-              console.log("Outside the for loop, about to update the table-body");
 
               $('#dispatch-table-body').html(tableBlock);
 
