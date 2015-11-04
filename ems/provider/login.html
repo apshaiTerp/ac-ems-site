@@ -226,7 +226,7 @@
           return;
         }
 
-        var providerID = provider.substring(0, 4);
+        var providerID = provider.substring(0, 7);
 
         //Now we need to run our validation check
         var jsonBody = '{ "userName" : "' + userName + '", "password" : "' + pwd + '", "userRole" : "EMS", "authorizeID" : ' + providerID + '}';
@@ -261,7 +261,7 @@
               sessionStorage.setItem("userDisplayName", curUserDisplayName);
               sessionStorage.setItem("providerID", providerID);
 
-              window.location = "./dispatch.html";
+              window.location = "./provider.html";
             } else {
               var errorMessage = data['errorMessage'];
               document.getElementById("sign-in-text").innerHTML = '<span style="color:red"><strong>' + errorMessage + '</span>   Please try again.</strong>';
