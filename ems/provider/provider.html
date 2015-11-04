@@ -203,7 +203,7 @@
 
             if (messageType == "Success") {
               populateUserName();
-
+              populateUnassignedDispatchTable();
             } else {
               var errorMessage = data['errorMessage'];
               console.log("Problem: " + errorType + " - " + errorMessage)

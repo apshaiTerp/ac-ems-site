@@ -108,6 +108,7 @@
                   <thead>
                     <tr>
                       <th>Event ID</th>
+                      <th>Dispatch ID</th>
                       <th>Assigned Ambulance</th>
                       <th>Current Event State</th>
                       <th>Severity Level</th>
@@ -183,10 +184,42 @@
         });
       };
 
+      function populateActiveEventTable() {
+        var tableURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9/event?result=table";
+
+        $.ajax({
+          url: tableURL,
+          type: 'GET',
+          success: function (data) {
+            var messageType = data['messageType'];
+            var errorType   = data['errorType'];
+
+            if (messageType == "Request Successful") {
+              //Do the stuff
+              var dispatchList = data['resultList'];
+              var tableBlock   = " ";
+              for (var pos = 0; pos < dispatchList.length; pos++) {
+                var curRow = dispatchList[pos];
+                tableBlock = tableBlock + '<tr id="tablerow' + pos + '"><td>' + curRow['eventID'] + '</td><td>' + curRow['dispatchID'] + '</td><td>' + curRow['ambulanceID'] + '</td><td>' + curRow['eventState'] + '</td><td>' + curRow['patientSeverity'] + '</td><td>' + curRow['destinationHospital'] + '</td><td>' + curRow['eventStartDate'] + '</td></tr>';
+              }
+              $('#event-table-body').html(tableBlock);
+            } else {
+              var errorMessage = data['errorMessage'];
+              console.log("Dispatch Error: " + errorType + " - " + errorMessage);
+            }
+          },
+          error: function (request, status, error) {
+            console.log("Something with the call failed!");
+          }
+        });
+      };
+
       $(document).ready(function() {
         var auto_refresh1 = setInterval(populateUnassignedDispatchTable, 5000);
+        var auto_refresh2 = setInterval(populateActiveEventTable, 5000);
 
         populateUnassignedDispatchTable();
+        populateActiveEventTable();
       });
 
     </script>
