@@ -318,7 +318,9 @@
       };
 
       function populateActiveEventTable() {
-        var tableURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9/event?result=table";
+        var providerID      = sessionStorage.getItem("providerID");
+
+        var tableURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9/event?result=table&providerid=" + providerID;
 
         $.ajax({
           url: tableURL,
