@@ -145,6 +145,25 @@
       </footer>
     </div> <!-- /container -->
 
+    <div class="modal fade" id="amb-select-modal" tabindex="-1" role="dialog" aria-labelledby="ambSelectModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title" id="ambSelectModal">Assign an Ambulance</h4>
+          </div>
+          <div class="modal-body">
+            <p>Which Ambulance do you wish to assign to this dispatch?</p>
+          </div>
+          <div class="modal-footer" id="dialog-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Some Ambulance</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -161,6 +180,12 @@
 
       function assignAmbulanceToDispatch(dispatchID) {
         console.log("Preparing to assign an ambilance to dispatchID " + dispatchID);
+
+        var availAmbulances = JSON.parse(sessionStorage.getItem("availAmbulances"));
+
+        console.log("There are " + availAmbulances.length + " ambulances available for assignment");
+
+        $('#amb-select-modal').modal("show");
       };
 
       function populateUserName() {
