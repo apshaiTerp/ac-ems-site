@@ -29,6 +29,7 @@
     <!-- Custom styles for this template -->
     <link href='http://fonts.googleapis.com/css?family=Fredericka+the+Great|Architects+Daughter|Ubuntu' rel='stylesheet' type='text/css'>
     <link href="css/apshai.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css"/>
   </head>
 
   <body>
@@ -186,6 +187,8 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/sockjs-0.3.js"></script>
+    <script src="js/stomp.js"></script>
 
     <script type='text/javascript'>//<![CDATA[ 
 
@@ -193,6 +196,24 @@
         sessionStorage.clear();
         localStorage.clear();
         window.location = "./login.html";
+      };
+
+      function showModalSuccessDialog(titleText, messageText) {
+        BootstrapDialog.show({
+          title: titleText,
+          message: messageText,
+          type: "type-success",
+          buttons: [{
+              id: 'btn-ok',   
+              icon: 'glyphicon glyphicon-check',       
+              label: 'OK',
+              cssClass: 'btn-primary', 
+              autospin: false,
+              action: function(dialogRef){    
+                  dialogRef.close();
+              }
+          }]
+        });
       };
 
       function postAmbulanceDispatch(dispatchID, ambulanceID) {
@@ -212,6 +233,13 @@
             var errorType   = data['errorType'];
 
             if (messageType == "Success") {
+              //In addition to the UI refresh, we want to send notifications to the ambulance and dispatcher
+              var dispatchTarget  = '/topic/dispatch';
+              var ambulanceTarget = '/topic/amb' + ambulanceID;
+
+              rabbitClient.send(ambulanceTarget, {'reply-to' : ambulanceTarget}, "You've been assigned a new dispatch!");
+              rabbitClient.send(dispatchTarget, {'reply-to' : dispatchTarget}, "Dispatch " + dispatchID + " has been assigned to Ambulance " + ambulanceID + ".");
+
               populateUserName();
               populateUnassignedDispatchTable();
             } else {
@@ -357,12 +385,46 @@
       };
 
       $(document).ready(function() {
-        var auto_refresh1 = setInterval(populateUnassignedDispatchTable, 5000);
-        var auto_refresh2 = setInterval(populateActiveEventTable, 5000);
+        var auto_refresh1 = setInterval(populateUnassignedDispatchTable, 15000);
+        var auto_refresh2 = setInterval(populateActiveEventTable, 15000);
 
         populateUnassignedDispatchTable();
         populateActiveEventTable();
       });
+
+      //Add the STOMP stuff
+      var webSocket    = new SockJS('http://107.188.249.238:15674/stomp');
+      var rabbitClient = Stomp.over(webSocket);
+      // SockJS does not support heart-beat: disable heart-beats
+      rabbitClient.heartbeat.incoming = 0;
+      rabbitClient.heartbeat.outgoing = 0;
+
+      //This is the topic I want to subscribe to.  It should represent my current identify
+      var myTopic = '/topic/ems' + sessionStorage.getItem("providerID");
+
+      //Create the helper methods needed to subscribe to the RabbitMQ service
+      var onRabbitConnect = function(x) {
+        //subscribe to my messages.  In this case, the only action that needs to be taken is a notification
+        rabbitClient.subscribe(myTopic, function(message) {
+          showModalSuccessDialog("System Notification", message.body);
+          populateUnassignedDispatchTable();
+          populateActiveEventTable();
+        });
+      };
+      var onRabbitError = function(error) {
+        console.log("Something bad happened: " + error.headers);
+      };
+
+      /**************************/
+      //Create the connection to RabbitMQ
+      rabbitClient.connect('ems', 'emsrabbit1', onRabbitConnect, onRabbitError, '/ems');
+      /*************************/
+
+      window.onbeforeunload = function() {
+        rabbitClient.disconnect(function() {
+          console.log("I disconnected");
+        });
+      };
 
     </script>
   </body>
