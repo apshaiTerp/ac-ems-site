@@ -500,19 +500,19 @@
       //This is the topic I want to subscribe to.  It should represent my current identify
       var myTopic = '/topic/dispatch1';
       //Create the helper methods needed to subscribe to the RabbitMQ service
-      /*************************
-      var onRabbitConnect = function() {
+      function onRabbitConnect() {
         //subscribe to my messages.  In this case, the only action that needs to be taken is a notification
         rabbitClient.subscribe(myTopic, function(message) {
           showModalSuccessDialog("System Notification", message.body);
         });
       };
-      var onRabbitError = function() {
+      function onRabbitError() {
         console.log("Something bad happened");
       };
 
+      /**************************
       //Create the connection to RabbitMQ
-      rabbitClient.connect('ems', 'emsrabbit1', onRabbitConnect, onRabbitError, '/ems');
+      rabbitClient.connect('ems', 'emsrabbit1', onRabbitConnect(), onRabbitError(), '/ems');
       *************************/
 
     </script>
