@@ -506,8 +506,8 @@
           showModalSuccessDialog("System Notification", message.body);
         });
       };
-      var onRabbitError = function() {
-        console.log("Something bad happened");
+      var onRabbitError = function(error) {
+        console.log("Something bad happened: " + error.headers.message);
       };
 
       /**************************/
@@ -515,6 +515,12 @@
       rabbitClient.connect('ems', 'emsrabbit1', onRabbitConnect, onRabbitError, '/ems');
       /*************************/
 
+      window.onbeforeunload = function() {
+        rabbitClient.disconnect(function() {
+          console.log("I disconnected");
+        });
+      };
+      
     </script>
   </body>
 </html>
