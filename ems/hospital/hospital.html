@@ -30,6 +30,7 @@
     <link href='http://fonts.googleapis.com/css?family=Fredericka+the+Great|Architects+Daughter|Ubuntu' rel='stylesheet' type='text/css'>
     <link href="css/apshai.css" rel="stylesheet">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css"/>
   </head>
 
   <body>
@@ -193,6 +194,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>
+    <script src="js/sockjs-0.3.js"></script>
+    <script src="js/stomp.js"></script>
 
     <script type='text/javascript'>//<![CDATA[ 
 
@@ -200,6 +204,24 @@
         sessionStorage.clear();
         localStorage.clear();
         window.location = "./login.html";
+      };
+
+      function showModalSuccessDialog(titleText, messageText) {
+        BootstrapDialog.show({
+          title: titleText,
+          message: messageText,
+          type: "type-success",
+          buttons: [{
+              id: 'btn-ok',   
+              icon: 'glyphicon glyphicon-check',       
+              label: 'OK',
+              cssClass: 'btn-primary', 
+              autospin: false,
+              action: function(dialogRef){    
+                  dialogRef.close();
+              }
+          }]
+        });
       };
 
       function populateHospitalFields() {
@@ -365,6 +387,40 @@
 
       populateHospitalFields();
 
+      //Add the STOMP stuff
+      var webSocket    = new SockJS('http://107.188.249.238:15674/stomp');
+      var rabbitClient = Stomp.over(webSocket);
+      // SockJS does not support heart-beat: disable heart-beats
+      rabbitClient.heartbeat.incoming = 0;
+      rabbitClient.heartbeat.outgoing = 0;
+
+      //This is the topic I want to subscribe to.  It should represent my current identify
+      var myTopic = '/topic/hosp' + sessionStorage.getItem("hospitalID");
+
+      //Create the helper methods needed to subscribe to the RabbitMQ service
+      var onRabbitConnect = function(x) {
+        //subscribe to my messages.  In this case, the only action that needs to be taken is a notification
+        rabbitClient.subscribe(myTopic, function(message) {
+          showModalSuccessDialog("System Notification", message.body);
+
+          //TODO - Once we add in the list of ambulances, we will want to trigger the refresh on the method
+          //that handles display.  For now, the call is ready.
+        });
+      };
+      var onRabbitError = function(error) {
+        console.log("Something bad happened: " + error.headers);
+      };
+
+      /**************************/
+      //Create the connection to RabbitMQ
+      rabbitClient.connect('ems', 'emsrabbit1', onRabbitConnect, onRabbitError, '/ems');
+      /*************************/
+
+      window.onbeforeunload = function() {
+        rabbitClient.disconnect(function() {
+          console.log("I disconnected");
+        });
+      };
 
 
     </script>
