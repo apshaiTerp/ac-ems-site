@@ -219,8 +219,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.0.3/sockjs.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+    <script src="js/sockjs-0.3.js"></script>
+    <script src="js/stomp.js"></script>
 
     <script type='text/javascript'>//<![CDATA[ 
 
@@ -506,13 +506,13 @@
           showModalSuccessDialog("System Notification", message.body);
         });
       };
-      var onRabbitError = function(x) {
+      var onRabbitError = function() {
         console.log("Something bad happened");
       };
 
       /**************************/
       //Create the connection to RabbitMQ
-      rabbitClient.connect('ems', 'emsrabbit1', onRabbitConnect(), onRabbitError(), '/ems');
+      rabbitClient.connect('ems', 'emsrabbit1', onRabbitConnect, onRabbitError, '/ems');
       /*************************/
 
     </script>
