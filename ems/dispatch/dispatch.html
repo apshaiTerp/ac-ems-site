@@ -216,9 +216,11 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"/>
+    <script src="js/bootstrap.min.js"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.0.3/sockjs.js"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"/>
 
     <script type='text/javascript'>//<![CDATA[ 
 
@@ -348,6 +350,10 @@
 
             if (messageType == "Success") {
               showModalSuccessDialog("Dispatch Created", 'The dispatch was successfully created.\nClick on the Active Dispatch tab to view this event and all other active dispatches.');
+
+              //Add the notification for the Provider
+              var topicTarget = '/topic/ems' + providerID;
+              rabbitClient.send(topicTarget, {'reply-to' : topicTarget}, "A new Dispatch has been assigned to you.");
 
               resetInputs();
             } else {
@@ -483,6 +489,30 @@
         //Reverify the location and store the coordinates
         validateAddress("yes");
       };
+
+      //Add the STOMP stuff
+      var webSocket    = new SockJS('http://107.188.249.238:15674/stomp');
+      var rabbitClient = Stomp.over(webSocket);
+      // SockJS does not support heart-beat: disable heart-beats
+      rabbitClient.heartbeat.incoming = 0;
+      rabbitClient.heartbeat.outgoing = 0;
+
+      //This is the topic I want to subscribe to.  It should represent my current identify
+      var myTopic = '/topic/dispatch1';
+
+      //Create the helper methods needed to subscribe to the RabbitMQ service
+      var onRabbitConnect = function() {
+        //subscribe to my messages.  In this case, the only action that needs to be taken is a notification
+        rabbitClient.subscribe(myTopic, function(message) {
+          showModalSuccessDialog("System Notification", message.body);
+        });
+      };
+      var onRabbitError = function() {
+        console.log("Something bad happened");
+      };
+
+      //Create the connection to RabbitMQ
+      rabbitClient.connect('ems', 'emsrabbit1', onRabbitConnect, onRabbitError, '/ems');
 
     </script>
   </body>
