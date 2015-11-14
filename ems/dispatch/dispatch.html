@@ -493,7 +493,6 @@
       //Add the STOMP stuff
       var webSocket    = new SockJS('http://107.188.249.238:15674/stomp');
       var rabbitClient = Stomp.over(webSocket);
-      /*************************
       // SockJS does not support heart-beat: disable heart-beats
       rabbitClient.heartbeat.incoming = 0;
       rabbitClient.heartbeat.outgoing = 0;
@@ -501,6 +500,7 @@
       //This is the topic I want to subscribe to.  It should represent my current identify
       var myTopic = '/topic/dispatch1';
       //Create the helper methods needed to subscribe to the RabbitMQ service
+      /*************************
       var onRabbitConnect = function() {
         //subscribe to my messages.  In this case, the only action that needs to be taken is a notification
         rabbitClient.subscribe(myTopic, function(message) {
