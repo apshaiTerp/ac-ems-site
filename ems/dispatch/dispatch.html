@@ -498,7 +498,7 @@
       rabbitClient.heartbeat.outgoing = 0;
 
       //This is the topic I want to subscribe to.  It should represent my current identify
-      var myTopic = '/topic/dispatch1';
+      var myTopic = '/topic/dispatch';
       //Create the helper methods needed to subscribe to the RabbitMQ service
       var onRabbitConnect = function(x) {
         //subscribe to my messages.  In this case, the only action that needs to be taken is a notification
@@ -520,7 +520,7 @@
           console.log("I disconnected");
         });
       };
-      
+
     </script>
   </body>
 </html>

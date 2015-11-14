@@ -164,6 +164,24 @@
 
       populateUserName();
 
+      function showModalSuccessDialog(titleText, messageText) {
+        BootstrapDialog.show({
+          title: titleText,
+          message: messageText,
+          type: "type-success",
+          buttons: [{
+              id: 'btn-ok',   
+              icon: 'glyphicon glyphicon-check',       
+              label: 'OK',
+              cssClass: 'btn-primary', 
+              autospin: false,
+              action: function(dialogRef){    
+                  dialogRef.close();
+              }
+          }]
+        });
+      };
+
       function populateUnassignedDispatchTable() {
         var tableURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9/dispatch?result=table";
 
@@ -237,12 +255,45 @@
       };
 
       $(document).ready(function() {
-        var auto_refresh1 = setInterval(populateUnassignedDispatchTable, 5000);
-        var auto_refresh2 = setInterval(populateActiveEventTable, 5000);
+        var auto_refresh1 = setInterval(populateUnassignedDispatchTable, 15000);
+        var auto_refresh2 = setInterval(populateActiveEventTable, 15000);
 
         populateUnassignedDispatchTable();
         populateActiveEventTable();
       });
+
+      //Add the STOMP stuff
+      var webSocket    = new SockJS('http://107.188.249.238:15674/stomp');
+      var rabbitClient = Stomp.over(webSocket);
+      // SockJS does not support heart-beat: disable heart-beats
+      rabbitClient.heartbeat.incoming = 0;
+      rabbitClient.heartbeat.outgoing = 0;
+
+      //This is the topic I want to subscribe to.  It should represent my current identify
+      var myTopic = '/topic/dispatch';
+      //Create the helper methods needed to subscribe to the RabbitMQ service
+      var onRabbitConnect = function(x) {
+        //subscribe to my messages.  In this case, the only action that needs to be taken is a notification
+        rabbitClient.subscribe(myTopic, function(message) {
+          showModalSuccessDialog("System Notification", message.body);
+          populateUnassignedDispatchTable();
+          populateActiveEventTable();
+        });
+      };
+      var onRabbitError = function(error) {
+        console.log("Something bad happened: " + error.headers.message);
+      };
+
+      /**************************/
+      //Create the connection to RabbitMQ
+      rabbitClient.connect('ems', 'emsrabbit1', onRabbitConnect, onRabbitError, '/ems');
+      /*************************/
+
+      window.onbeforeunload = function() {
+        rabbitClient.disconnect(function() {
+          console.log("I disconnected");
+        });
+      };
 
     </script>
   </body>
