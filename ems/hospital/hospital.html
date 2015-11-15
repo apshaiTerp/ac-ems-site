@@ -180,6 +180,43 @@
       </div>
     </div>
 
+    <div><hr></div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading panel-title" id="assigned-heading">Inbound Ambulances
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Assigned Ambulance</th>
+                      <th>Event ID</th>
+                      <th>Patient Name</th>
+                      <th>Patient Info</th>
+                      <th>Patient Criteria</th>
+                      <th>Ambulance ETA</th>
+                      <th> </th>
+                    </tr>
+                  </thead>
+                  <tbody id="event-table-body">
+                    <tr></tr>
+                  </tbody>
+                </table>
+                <div id="ambulance-alert-show">
+                  <div class="alert alert-info" role="alert">No Ambulances are inbound.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Site footer -->
     <div class="container">
       <hr>
@@ -187,6 +224,29 @@
         <p>&copy; TerrapinEMS Dispatch 2015 - A Project developed in conjunction with UMKC</p>
       </footer>
     </div> <!-- /container -->
+
+    <div id="divert-modal" class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="gridSystemModalLabel">Initiate Ambulance Diversion?</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="divert-reason-text" class="control-label">Message:</label>
+                <textarea class="form-control" id="divert-reason-text"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer" id="divert-buttons">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary">Divert Ambulance</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -386,6 +446,69 @@
       };
 
       populateHospitalFields();
+
+      function processAmbulanceDiversion(ambulanceID) {
+        console.log("I'm diverting ambulance " + ambulanceID);
+        
+        var reasonText = $('#divert-reason-text').val();
+
+        console.log("Why?: " + reasonText);
+
+        //If it's good, do something with it.
+
+        $('#divert-modal').modal('hide');
+      };
+
+      function divertAmbulance(ambulanceID) {
+        console.log("I want to divert ambulance " + ambulanceID);
+
+        //We need to show the dialog to get some text from them.
+        $('#divert-buttons').html('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary" onclick="processAmbulanceDiversion(' + ambulanceID + ')">Divert Ambulance</button>');
+
+        $('#divert-reason-text').val("");
+        $('#divert-modal').modal('show');
+      };
+
+      function populateInboundAmbulanceTable() {
+        var hospitalID = sessionStorage.getItem("hospitalID");
+
+        var tableURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9/provider/dispatch?result=table&id=" + hospitalID;
+        //console.log("tableURL: " + tableURL);
+
+        $.ajax({
+          url: tableURL,
+          type: 'GET',
+          success: function (data) {
+            var messageType = data['messageType'];
+            var errorType   = data['errorType'];
+
+            if (messageType == "Request Successful") {
+              //Do the stuff
+              var dispatchList    = data['resultList'];
+              var tableBlock   = " ";
+
+              for (var pos = 0; pos < dispatchList.length; pos++) {
+                var curRow = dispatchList[pos];
+                tableBlock = tableBlock + '<tr id="tablerow' + pos + '"><td>' + curRow['ambulanceID'] + '</td><td>' + curRow['eventID'] + '</td><td>' + curRow['patientName'] + '</td><td>' + curRow['patientInfo'] + '</td><td>' + curRow['patientCondition'] + '</td><td>' + curRow['etaString'] + '</td><td><button type="button" class="btn btn-danger btn-block" onclick="divertAmbulance(' + curRow['ambulanceID'] + ')"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Divert Ambulance</button></td></tr>';
+              }
+
+              $('#dispatch-table-body').html(tableBlock);
+
+              if (dispatchList.length == 0) {
+                $('#ambulance-alert-show').html('<div class="alert alert-info" role="alert">No Ambulances are inbound.</div>');
+              } else {
+                $('#ambulance-alert-show').html("");
+              }
+            } else {
+              var errorMessage = data['errorMessage'];
+              console.log("Dispatch Error: " + errorType + " - " + errorMessage);
+            }
+          },
+          error: function (request, status, error) {
+            console.log("Something with the call failed!");
+          }
+        });
+      };
 
       //Add the STOMP stuff
       var webSocket    = new SockJS('http://107.188.249.238:15674/stomp');
