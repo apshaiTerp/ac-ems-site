@@ -399,6 +399,7 @@
 
       //Create the helper methods needed to subscribe to the RabbitMQ service
       var onRabbitConnect = function(x) {
+        sessionStorage.setItem("failCount", 0);
         //subscribe to my messages.  In this case, the only action that needs to be taken is a notification
         rabbitClient.subscribe(myTopic, function(message) {
           showModalSuccessDialog("System Notification", message.body);
@@ -407,8 +408,19 @@
           //that handles display.  For now, the call is ready.
         });
       };
-      var onRabbitError = function(error) {
-        console.log("Something bad happened: " + error.headers);
+      var onRabbitError = function() {
+        console.log("Something bad happened.  Attemping to restore the connection");
+
+        //This is questionable.  If the connection is unavilable, could create a loop.
+        var failCount = sessionStorage("failCount");
+        if (failCount == null) {
+          failCount = 1;
+          sessionStorage.setItem("failCount", failCount);
+        }
+        if (failCount > 10) {
+          return;
+        }
+        rabbitClient.connect('ems', 'emsrabbit1', onRabbitConnect, onRabbitError, '/ems');
       };
 
       /**************************/

@@ -277,13 +277,26 @@
       var onRabbitConnect = function(x) {
         //subscribe to my messages.  In this case, the only action that needs to be taken is a notification
         rabbitClient.subscribe(myTopic, function(message) {
+          sessionStorage.setItem("failCount", 0);
+
           showModalSuccessDialog("System Notification", message.body);
           populateUnassignedDispatchTable();
           populateActiveEventTable();
         });
       };
-      var onRabbitError = function(error) {
-        console.log("Something bad happened: " + error.headers.message);
+      var onRabbitError = function() {
+        console.log("Something bad happened.  Attemping to restore the connection");
+
+        //This is questionable.  If the connection is unavilable, could create a loop.
+        var failCount = sessionStorage("failCount");
+        if (failCount == null) {
+          failCount = 1;
+          sessionStorage.setItem("failCount", failCount);
+        }
+        if (failCount > 10) {
+          return;
+        }
+        rabbitClient.connect('ems', 'emsrabbit1', onRabbitConnect, onRabbitError, '/ems');
       };
 
       /**************************/
