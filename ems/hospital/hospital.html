@@ -474,7 +474,7 @@
       function populateInboundAmbulanceTable() {
         var hospitalID = sessionStorage.getItem("hospitalID");
 
-        var tableURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9/provider/dispatch?result=table&id=" + hospitalID;
+        var tableURL = "http://107.188.249.238:8080/ac-ems-system-rest-0.9//hospital/inbound?id=" + hospitalID;
         //console.log("tableURL: " + tableURL);
 
         $.ajax({
@@ -511,6 +511,12 @@
           }
         });
       };
+
+      $(document).ready(function() {
+        var auto_refresh1 = setInterval(populateInboundAmbulanceTable, 15000);
+
+        populateInboundAmbulanceTable();
+      });
 
       //Add the STOMP stuff
       var webSocket    = new SockJS('http://107.188.249.238:15674/stomp');
