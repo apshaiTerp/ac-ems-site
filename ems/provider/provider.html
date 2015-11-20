@@ -417,7 +417,7 @@
         console.log("Something bad happened.  Attemping to restore the connection");
 
         //This is questionable.  If the connection is unavilable, could create a loop.
-        var failCount = sessionStorage("failCount");
+        var failCount = sessionStorage.getItem("failCount");
         if (failCount == null) {
           failCount = 1;
           sessionStorage.setItem("failCount", failCount);

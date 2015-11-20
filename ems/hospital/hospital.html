@@ -486,17 +486,17 @@
 
             if (messageType == "Request Successful") {
               //Do the stuff
-              var dispatchList    = data['resultList'];
+              var ambulanceList    = data['resultList'];
               var tableBlock   = " ";
 
-              for (var pos = 0; pos < dispatchList.length; pos++) {
-                var curRow = dispatchList[pos];
+              for (var pos = 0; pos < ambulanceList.length; pos++) {
+                var curRow = ambulanceList[pos];
                 tableBlock = tableBlock + '<tr id="tablerow' + pos + '"><td>' + curRow['ambulanceID'] + '</td><td>' + curRow['eventID'] + '</td><td>' + curRow['patientName'] + '</td><td>' + curRow['patientInfo'] + '</td><td>' + curRow['patientCondition'] + '</td><td>' + curRow['etaString'] + '</td><td><button type="button" class="btn btn-danger btn-block" onclick="divertAmbulance(' + curRow['ambulanceID'] + ')"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Divert Ambulance</button></td></tr>';
               }
 
-              $('#dispatch-table-body').html(tableBlock);
+              $('#event-table-body').html(tableBlock);
 
-              if (dispatchList.length == 0) {
+              if (ambulanceList.length == 0) {
                 $('#ambulance-alert-show').html('<div class="alert alert-info" role="alert">No Ambulances are inbound.</div>');
               } else {
                 $('#ambulance-alert-show').html("");
@@ -543,7 +543,7 @@
         console.log("Something bad happened.  Attemping to restore the connection");
 
         //This is questionable.  If the connection is unavilable, could create a loop.
-        var failCount = sessionStorage("failCount");
+        var failCount = sessionStorage.getItem("failCount");
         if (failCount == null) {
           failCount = 1;
           sessionStorage.setItem("failCount", failCount);
