@@ -458,6 +458,33 @@
 
         //If it's good, do something with it.
         //TODO - This is where we should add our POST and RabbitMQ message to initiate the diversion
+
+        //Add the notification for the Provider
+        var topicTarget = '/topic/amb' + ambulanceID;
+        rabbitClient.send(topicTarget, {'reply-to' : topicTarget}, "DIVERSION REQUEST RECEIVED!\nReason:  " + reasonText);
+
+        /**********
+        var jsonBody = '{ "eventState" : "Divert", "targetHospitalID" : 0, "changeDescription" : "' + reasonText + '", "userID" : ' + sessionStorage.getItem("userID") + ' }';
+        var eventURL = 'http://107.188.249.238:8080/ac-ems-system-rest-0.9/event?id=' + someID;
+        $.ajax ({
+          type: 'PUT',
+          url: ,
+          data: jsonBody,
+          contentType: "application/json",
+          dataType: 'json',
+          success: function(data) {
+            var errorType   = data['errorType'];
+
+            if (errorType != null) {
+              var errorMessage = data['errorMessage'];
+              alert(errorType + ": " + errorMessage);
+            } 
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert('An Unknown Error Occured During Add Task.  Please Try Again Later.');
+          }
+        });
+        /**********/
         
       };
 
