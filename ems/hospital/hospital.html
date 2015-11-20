@@ -454,9 +454,11 @@
 
         console.log("Why?: " + reasonText);
 
-        //If it's good, do something with it.
-
         $('#divert-modal').modal('hide');
+
+        //If it's good, do something with it.
+        //TODO - This is where we should add our POST and RabbitMQ message to initiate the diversion
+        
       };
 
       function divertAmbulance(ambulanceID) {
